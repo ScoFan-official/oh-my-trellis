@@ -1,83 +1,121 @@
 # mp-trellis-pack
 
-A reusable public template that fuses [mattpocock/skills](https://github.com/mattpocock/skills) with a [Trellis](https://github.com/mindfold-ai/Trellis)-managed repository — distributed through **two complementary channels**.
+A public **asset pack + distribution hub** that fuses three ecosystems —
+[mattpocock/skills](https://github.com/mattpocock/skills),
+[Everything Claude Code](https://github.com/davila7/claude-code-templates) (ECC),
+and [Trellis](https://github.com/mindfold-ai/Trellis) — and ships them to
+**22 agent platforms** from one repo.
 
-mattpocock's engineering skills (`/to-spec`, `/to-tickets`, `/triage`, `/wayfinder`, `/implement`) speak in terms of an abstract "issue tracker". This pack answers that abstraction with **the Trellis task system itself**: specs become `.trellis/tasks/` directories, tickets become child tasks with `blocked_by` metadata, triage roles become task `meta` keys, and wayfinder maps live inside parent tasks. Upstream skill files are never modified, so `npx skills update` stays safe.
+## What's inside (1,740+ assets)
 
-## Install channel 1 — Trellis spec registry (contracts)
+| Layer | Contents | How it ships |
+| --- | --- | --- |
+| `marketplace/` | Trellis spec-registry template (`agent-workflow`) — the Trellis-backend contract for mp skills | `trellis init --registry` |
+| `skills/` | **38 skills**: `mp-trellis-bridge` + all of mattpocock's (engineering 19, productivity 7, misc 4, in-progress 6, +1) | `npx skills add` |
+| `catalog/` | Full mirror: **mp docs + claude-plugin + .agents**, and ECC's complete components — **889 skills, 422 agents, 288 commands, 104 MCPs**, plus hooks/loops/mods/settings/sandbox | `scripts/install.py` |
+
+## Three install channels
+
+### 1. Trellis spec registry — the contract
 
 ```bash
 trellis init --registry gh:ScoFan-official/mp-trellis-pack/marketplace --template agent-workflow --append
 ```
 
-Installs the contract specs into `.trellis/spec/`:
+Installs `agents/` + `guides/` specs into `.trellis/spec/` with `paths:`-scoped
+injection: the tracker contract (spec → task dir, ticket → child task,
+triage → `meta.triage`, wayfinder → `map.md`), triage roles, domain docs, and
+the mp×Trellis integration guide.
 
-```
-.trellis/spec/
-├── agents/
-│   ├── index.md
-│   ├── issue-tracker.md      # THE contract — paths: .trellis/tasks/, .scratch/
-│   ├── triage-labels.md      # five roles → meta.triage / Status: lines
-│   └── domain.md             # GLOSSARY.md + docs/adr/ conventions
-└── guides/
-    └── mp-integration.md     # phase map, lane rules, skill precedence
-```
-
-`--append` adds missing files only — safe on existing spec trees. Contract files carry `paths:` frontmatter, so Trellis's dynamic spec loading injects them exactly when the agent touches task artifacts, the inbox, or domain docs.
-
-## Install channel 2 — skills CLI (the bridge skill)
+### 2. skills CLI — the core skill set
 
 ```bash
-# mattpocock's skills (skip if already installed)
-npx skills add mattpocock/skills --agent devin --copy
-
-# the bridge: routing contract + first-run bootstrapper
-npx skills add ScoFan-official/mp-trellis-pack --agent devin --copy
+npx skills add ScoFan-official/mp-trellis-pack --agent <platform> --copy
 ```
 
-The `mp-trellis-bridge` skill carries the same contracts as fallback templates and bootstraps the whole thing on first load: verify `.trellis/`, install spec contracts (registry first, templates second), append an `## Agent skills` block to `AGENTS.md`, check the mp skill set is present. It's a no-op afterwards.
+Installs all 38 skills for any supported platform (`devin`, `codex`, `claude`,
+…). `mp-trellis-bridge` bootstraps the spec contracts on first load.
 
-## Why two channels
+### 3. install.py — the full catalog, per platform
 
-- The **spec registry** is Trellis's native extension point — contracts live where Trellis expects specs and get path-scoped injection for free.
-- The **skills CLI** is what Trellis doesn't ship (docs: "no automated installer for external skills") — it delivers the skill itself plus bootstrap logic, lockfile-tracked updates, and per-platform `--agent` targeting.
+```bash
+# inventory
+python scripts/install.py --list
 
-Either channel alone is sufficient; together they self-heal.
+# everything ECC+mp, shaped for your platform
+python scripts/install.py --platform codex --target /path/to/repo
+python scripts/install.py --platform devin --target /path/to/repo
+python scripts/install.py --platform zcode --target /path/to/repo
 
-## Layout
+# surgical installs
+python install.py --platform codex --target . \
+  --component "ecc:agents/security/*" "ecc:commands/git-workflow/commit" "mp:engineering/tdd"
 
-```
-marketplace/
-├── index.json                          # registry index (type: "spec")
-└── specs/agent-workflow/               # installed → .trellis/spec/
-    ├── README.md  index.md
-    ├── agents/                         # contracts (paths-scoped)
-    └── guides/mp-integration.md
-skills/mp-trellis-bridge/
-    ├── SKILL.md                        # contract + bootstrap
-    ├── templates/                      # same files as spec fallback
-    └── hooks/after_archive_inbox_sweep.py
-```
+# just the recommended core (bridge + mp main skills)
+python install.py --platform zcode --target . --only-core
 
-## Optional lifecycle hook
-
-`skills/mp-trellis-bridge/hooks/after_archive_inbox_sweep.py` clears `.scratch/inbox/` files marked `Status: promoted → <task>` when that task is archived. Wire it in `.trellis/config.yaml` (adjust the path to your agent's skills dir):
-
-```yaml
-hooks:
-  after_archive:
-    - "python ./.devin/skills/mp-trellis-bridge/hooks/after_archive_inbox_sweep.py"
+# preview
+python install.py --platform claude --target . --dry-run
 ```
 
-Or per-task in `task.json` under `hooks.after_archive`. Hooks receive `TASK_JSON_PATH` in the environment; failures warn without blocking.
+## Platform support (22)
+
+Every asset type lands in the platform's native location and format:
+
+| Platform | skills | sub-agents | commands | mcp |
+| --- | --- | --- | --- | --- |
+| claude / cursor / codebuddy / droid / qoder / pi / gemini | native dir | md | md commands | json |
+| opencode | `.opencode/skills` | md + `permission:` | md | json |
+| **codex** | `.agents/skills` | **`.toml` + `developer_instructions`** | wrapped as skills | `config.toml` snippets |
+| kiro | `.kiro/skills` | json | wrapped as skills | json |
+| copilot | `.github/skills` | `*.agent.md` | `*.prompt.md` | json |
+| **devin** | `.devin/skills` | — (inline) | `.devin/workflows/` | json |
+| **zcode** | `.zcode/skills` | md (no `tools:`) | md | json |
+| kilo / antigravity | native dir | — (inline) | workflows | json |
+| omp / reasonix / trae / grok / kimi / snow / dsh | native dir | md (conv.) | md (conv.) | json |
+
+`verified` platforms follow Trellis's documented file locations; the rest use
+convention-based guesses (marked in `scripts/platforms.py` and `manifest.json`)
+— treat their agent/command output as drafts to review.
+
+## Repo layout
+
+```
+marketplace/            # Trellis spec registry (index.json + agent-workflow)
+skills/                 # npx-skills surface: bridge + all mp skills
+catalog/
+├── manifest.json       # every asset → per-platform target paths
+├── upstream.json       # pinned upstream SHAs
+├── ATTRIBUTION.md
+├── mattpocock/         # skills(4 dirs) + docs + .claude-plugin + .agents
+└── ecc/                # skills agents commands hooks mcps loops mods settings sandbox
+scripts/
+├── platforms.py        # 22-platform location table (single source of truth)
+├── install.py          # materialize catalog → any platform, any subset
+├── build_manifest.py   # regenerate manifest.json
+└── sync_upstream.py    # re-vendor upstreams (--check = drift report)
+```
+
+## Not ported (by design)
+
+ECC `hooks/`, `settings/`, `loops/`, `mods/`, `sandbox/` stay in `catalog/` as
+reference — they're Claude-Code-specific (hook JSON, settings.json, sandboxed
+bash); porting means rewriting per platform. mattpocock's `.claude-plugin/` is
+preserved so Claude users can also add his native marketplace directly.
 
 ## Updating
 
-- Bridge skill: `npx skills update` (lockfile-tracked).
-- Spec contracts: rerun the `trellis init --registry ... --append` command. Already-installed files are project-owned — review and merge changes intentionally, per Trellis's authoring model.
+```bash
+python scripts/sync_upstream.py --check   # see if upstreams moved
+python scripts/sync_upstream.py           # re-vendor catalog/
+python scripts/build_manifest.py          # refresh manifest
+npx skills update                          # colleague-side skill updates
+```
+
+Installed specs remain project-owned (Trellis model); catalog files are the
+pack's vendored copies — don't patch `catalog/` in place, sync overwrites.
 
 ## Requirements
 
-- A Trellis-managed repo (`.trellis/scripts/task.py` present)
-- `npx skills` (Node.js) for channel 2
-- mattpocock/skills for the skills this pack routes (the bridge alone does nothing)
+- Python 3.8+, git, `npx skills` for channel 2
+- Trellis repo only required for channel 1 (spec registry)

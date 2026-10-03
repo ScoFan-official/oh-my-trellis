@@ -18,6 +18,7 @@ If `.trellis/spec/agents/issue-tracker.md` is missing, run setup once before usi
 3. **Register the block**: append an `## Agent skills` section to `AGENTS.md` — strictly outside any `TRELLIS:START`/`TRELLIS:END` markers. Skip if the section already exists; create `AGENTS.md` with just that section if the file is missing. Use the block template below.
 4. **Check the skill set**: look for mattpocock skills (`grill-with-docs`, `to-spec`) in this agent's skills directory. If absent, tell the user to run `npx skills add mattpocock/skills --agent <their-platform> --copy` — the bridge is a contract layer, not the skills.
 5. **Optional hooks**: automation examples live in this skill's own `hooks/` directory. They wire into `.trellis/config.yaml`'s `hooks:` section or per-task `task.json` hooks. Do not edit `config.yaml` unprompted.
+6. **Full asset catalog**: the pack repo also vendors mattpocock + Everything-Claude-Code assets (1,700+: skills/sub-agents/commands/MCPs). Install any subset for 22 platforms via `python <pack>/scripts/install.py --platform <platform> --target <repo>`; see the pack README.
 
 Report what was created/skipped, then continue with whatever invoked this skill.
 

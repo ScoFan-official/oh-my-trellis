@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "templates": [
+    {
+      "id": "agent-workflow",
+      "type": "spec",
+      "name": "Agent Workflow (mattpocock × Trellis)",
+      "description": "Issue-tracker contract, triage roles and domain-docs conventions that let mattpocock/skills treat .trellis/tasks/ as the issue tracker. Includes a phase-map guide and path-scoped spec injection.",
+      "path": "marketplace/specs/agent-workflow",
+      "tags": ["skills", "mattpocock", "issue-tracker", "triage", "agents", "specs"]
+    }
+  ]
+}

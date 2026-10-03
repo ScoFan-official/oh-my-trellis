@@ -15,7 +15,7 @@ It also ships the lane rules that keep the two systems from fighting (Trellis ow
 npx skills add mattpocock/skills --agent devin --copy
 
 # 2. this bridge
-npx skills add <your-account>/mp-trellis-pack --agent devin --copy
+npx skills add ScoFan-official/mp-trellis-pack --agent devin --copy
 ```
 
 Then mention a tracker concept or invoke `/mp-trellis-bridge` once — the skill's bootstrap section seeds `docs/agents/*.md`, registers an `## Agent skills` block in `AGENTS.md`, and verifies prerequisites. It's a no-op afterwards.

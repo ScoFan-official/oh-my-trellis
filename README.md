@@ -129,6 +129,17 @@ Flags: `--platform` (required), `--target` (repo root, default `.`),
 - **mcps** → merged into the platform's MCP JSON config; Codex gets
   `.codex/mcp-<name>.toml` snippets to merge into `config.toml`
 
+## How components get triggered
+
+| Type | Trigger model | You say… |
+| --- | --- | --- |
+| skills (889) | **Semantic auto-match**: platform injects each SKILL.md's `name`+`description` into the agent's available-skill list; it self-loads when your task matches ("something is broken" → `diagnosing-bugs`). Explicit mention also works. | "debug this" or "use `api-design-principles`" |
+| commands (288) | **Explicit**: with a native command primitive → platform command syntax; without (codex/devin/kiro) → wrapped as `disable-model-invocation` skills, invoked by name. | "/ecc-commit" or "run `ecc-commit`" |
+| agents (422) | **Delegation**: platform's sub-agent mechanism (Claude `Task`, Codex subagents); auto-delegated on description match or invoked by name. **Skipped on devin/kilo/antigravity** (no primitive — read the body as an inline persona if needed). | "have `security-auditor` review this" |
+| mcps (104) | **Config activation**: merged into platform MCP config, handshake on restart, tools join the toolbox. Most need credentials — fill `<your-...>` placeholders first. | tools just appear |
+
+**Don't bulk-install all 889 skills** — every name+description costs system-prompt space and dilutes matching precision. Use `--only-core` or `--component` picks; browse `catalog/INDEX.md` as the shelf and install per need.
+
 ## Platform support (22)
 
 | Platform | skills dir | sub-agents | commands | mcp | status |

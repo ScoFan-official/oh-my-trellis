@@ -125,6 +125,17 @@ python scripts/install.py --platform devin --target . --dry-run
 - **mcps** → 合并进平台 MCP JSON 配置；Codex 生成
   `.codex/mcp-<name>.toml` 片段供合入 `config.toml`
 
+## 组件如何被触发
+
+| 类型 | 触发模型 | 你说… |
+| --- | --- | --- |
+| skills（889） | **语义自动匹配**：平台把每个 SKILL.md 的 `name`+`description` 注入 agent 的可用技能清单，任务命中描述时自行加载（"出问题了"→`diagnosing-bugs`）；也可显式点名。 | "帮我查这个 bug" 或 "用 `api-design-principles`" |
+| commands（288） | **显式触发**：有命令原语的平台走原生命令语法；没有的平台（codex/devin/kiro）包装为 `disable-model-invocation` 技能，按名调用。 | "/ecc-commit" 或 "跑 `ecc-commit`" |
+| agents（422） | **分派触发**：走平台 sub-agent 机制（Claude 的 `Task`、Codex 子代理），描述命中自动分派或点名委派。**devin/kilo/antigravity 无此原语不安装**（manifest 标 n/a；可把 body 当 inline 角色提示用）。 | "让 `security-auditor` 复审这段" |
+| mcps（104） | **配置激活**：合入平台 MCP 配置，重启握手后工具进工具箱。多数需要凭据——先填 `<your-...>` 占位符。 | 工具自动出现 |
+
+**不要一次全装 889 个技能**——每个 name+description 都占系统提示位，全装会灌爆清单、稀释匹配精度。推荐 `--only-core` 或 `--component` 按需选装；把 `catalog/INDEX.md` 当货架，用时再取。
+
 ## 平台支持（22 个）
 
 | 平台 | skills 目录 | sub-agents | commands | mcp | 状态 |

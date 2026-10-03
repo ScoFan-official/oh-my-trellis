@@ -1,5 +1,7 @@
 # mp-trellis-pack
 
+**English** · [简体中文](./README.zh-CN.md)
+
 A public **asset pack + distribution hub** that fuses three ecosystems —
 [mattpocock/skills](https://github.com/mattpocock/skills),
 [Everything Claude Code](https://github.com/davila7/claude-code-templates) (ECC),

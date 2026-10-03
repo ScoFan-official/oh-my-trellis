@@ -29,6 +29,16 @@ Two things it gives you:
 
 Everything works anonymously — the repo is public. Channels compose freely.
 
+### One-sentence install prompt (paste to your agent)
+
+Hand this to Devin / Codex / ZCode / Claude / Cursor and it will set everything up itself:
+
+> Set up Trellis and mp-trellis-pack in this repo: ① if `.trellis/` doesn't exist, run `npx @mindfoldhq/trellis init --guided` choosing this agent's platform; ② run `trellis init --registry gh:ScoFan-official/mp-trellis-pack/marketplace --template agent-workflow --append` to install the spec contracts; ③ install the skills for YOUR platform — prefer `npx skills add ScoFan-official/mp-trellis-pack --agent <your-platform> --copy`; if your platform isn't covered, run `git clone --depth 1 https://github.com/ScoFan-official/mp-trellis-pack /tmp/mtp && python /tmp/mtp/scripts/install.py --platform <your-platform> --target . --only-core` instead; ④ invoke the `mp-trellis-bridge` skill so it finishes seeding `AGENTS.md`, then read `.trellis/spec/agents/issue-tracker.md` and report back which tracker verbs you'll use for specs, tickets, triage and implementation.
+
+For non-Trellis repos, skip to skills only:
+
+> Install the mattpocock skill set here: `npx skills add ScoFan-official/mp-trellis-pack --agent <your-platform> --copy`, then browse `catalog/INDEX.md` in https://github.com/ScoFan-official/mp-trellis-pack and install extra components for this platform with `scripts/install.py` if needed.
+
 ---
 
 ## Channel 1 — Trellis spec registry (the contract)

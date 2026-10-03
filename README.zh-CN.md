@@ -28,6 +28,16 @@
 
 仓库已公开，全部通道匿名可用，可自由组合。
 
+### 一句话安装提示词（直接发给 agent）
+
+把下面这段贴给 Devin / Codex / ZCode / Claude / Cursor，它会自己完成全部初始化：
+
+> 在本仓库安装 Trellis 和 mp-trellis-pack：① 若 `.trellis/` 不存在，先跑 `npx @mindfoldhq/trellis init --guided` 并选择你所在的 agent 平台；② 跑 `trellis init --registry gh:ScoFan-official/mp-trellis-pack/marketplace --template agent-workflow --append` 安装 spec 合约；③ 给你的平台装技能——优先 `npx skills add ScoFan-official/mp-trellis-pack --agent <你的平台> --copy`；若你的平台不被覆盖，改用 `git clone --depth 1 https://github.com/ScoFan-official/mp-trellis-pack /tmp/mtp && python /tmp/mtp/scripts/install.py --platform <你的平台> --target . --only-core`；④ 调用 `mp-trellis-bridge` 技能完成 `AGENTS.md` 播种，然后读 `.trellis/spec/agents/issue-tracker.md`，向我汇报你对 spec、ticket、triage、实现分别会用哪些 tracker 动词。
+
+非 Trellis 仓库、只要技能时用这个短版：
+
+> 在本仓库安装 mattpocock 技能集：`npx skills add ScoFan-official/mp-trellis-pack --agent <你的平台> --copy`；装好后浏览 https://github.com/ScoFan-official/mp-trellis-pack 的 `catalog/INDEX.md`，如需更多组件用 `scripts/install.py` 按本机平台补装。
+
 ---
 
 ## 通道 1 —— Trellis spec registry（合约）

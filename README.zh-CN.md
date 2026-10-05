@@ -23,7 +23,7 @@ advisory 技能运不出设计系统——合约可以。oh-my-trellis 把
 [Everything Claude Code](https://github.com/davila7/claude-code-templates) 和
 [pbakaus/impeccable](https://github.com/pbakaus/impeccable) vendor 进同一个仓库，
 再把它们嘴里的抽象名词——"the issue tracker"、"PRODUCT.md"、"DESIGN.md"——
-绑进 Trellis 的 `.trellis/` 主轴，让工作流被强制执行，而不是被建议执行。
+绑进 Trellis 的 `.trellis/` 主轴，把工作流从"建议执行"变成"强制执行"。
 
 **3** 个 vendored 上游 · **1,741** 个目录资产 · **39** 个默认技能 · **22** 个平台 · **1** 层合约——对 vendored 文件零 patch。
 
@@ -35,9 +35,9 @@ advisory 技能运不出设计系统——合约可以。oh-my-trellis 把
 | --- | --- |
 | 只要 Trellis 合约规范 | `trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append` |
 | 推荐技能集（bridge + mp 全量 37 个 + impeccable） | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
-| 1741 资产目录里的任何东西 | `python scripts/install.py --platform <platform> --target <repo>` |
+| 1741 资产目录库里的任何东西 | `python scripts/install.py --platform <platform> --target <repo>` |
 
-仓库已公开，全部通道匿名可用，可自由组合。
+仓库已公开，三条通道均无需认证，可自由组合。
 
 ### 一句话安装提示词（直接发给 agent）
 
@@ -53,11 +53,11 @@ advisory 技能运不出设计系统——合约可以。oh-my-trellis 把
 
 ## 01 · 合约 —— Trellis spec registry
 
-技能说 "publish to the issue tracker" 时，指到 `.trellis/tasks/`；
-说 "更新 PRODUCT.md / DESIGN.md" 时，指到 `.trellis/spec/`。
-`paths:` frontmatter 按路径作用域注入——每份合约恰好在 agent 触碰它管的文件时加载，
-包括前端闸门：碰 `*.tsx` 就会收到 `frontend-craft.md`；
-`implement.md` 没有 `## Design review` 小节就不算 READY。
+技能说 "publish to the issue tracker"，指向 `.trellis/tasks/`；
+说 "更新 PRODUCT.md / DESIGN.md"，指向 `.trellis/spec/`。
+`paths:` frontmatter 按路径作用域注入——每份合约恰好在 agent 触碰它管的文件时加载。
+前端闸门同理：碰 `*.tsx` 就收到 `frontend-craft.md`；
+`implement.md` 没有 `## Design review` 小节，不算 READY。
 
 ```bash
 trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append
@@ -74,10 +74,10 @@ trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template 
 │   ├── frontend-craft.md     # impeccable 绑定 + Design review 闸门——触碰前端文件时注入
 │   └── domain.md             # GLOSSARY.md + docs/adr/ 约定——编辑 domain 文档时注入
 └── guides/
-    └── mp-integration.md     # 阶段映射、车道规则、技能优先级（拉取式文档）
+    └── mp-integration.md     # 阶段映射、泳道规则、技能优先级（拉取式文档）
 ```
 
-所有文件带 `paths:` frontmatter，Trellis dynamic spec loading 会在 agent
+所有文件带 `paths:` frontmatter，Trellis dynamic spec loading 在 agent
 触碰对应文件时自动注入该合约。`--append` 只补缺省文件，对已有 spec 树安全。
 安装后文件归项目所有（Trellis 项目所有权模型），可自行修改。
 
@@ -97,8 +97,8 @@ npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy
 
 ## 03 · 目录库 —— install.py
 
-`scripts/install.py` 把 catalog 中任意子集物化到目标仓库，
-并转换成该平台原生格式。
+`scripts/install.py` 把目录库中任意子集物化到目标仓库，
+并转换成该平台的原生格式。
 
 ```bash
 # 盘点
@@ -152,7 +152,7 @@ python scripts/install.py --platform devin --target . --dry-run
 | agents（422） | **分派触发**：走平台 sub-agent 机制（Claude 的 `Task`、Codex 子代理），描述命中自动分派或点名委派。**devin/kilo/antigravity 无此原语不安装**（manifest 标 n/a；可把 body 当 inline 角色提示用）。 | "让 `security-auditor` 复审这段" |
 | mcps（104） | **配置激活**：合入平台 MCP 配置，重启握手后工具进工具箱。多数需要凭据——先填 `<your-...>` 占位符。 | 工具自动出现 |
 
-**不要一次全装 889 个技能**——每个 name+description 都占系统提示位，全装会灌爆清单、稀释匹配精度。推荐 `--only-core` 或 `--component` 按需选装；把 `catalog/INDEX.md` 当货架，用时再取。
+**不要一次全装 889 个技能**——每个 name+description 都占系统提示位，全装会稀释匹配精度。推荐 `--only-core` 或 `--component` 按需选装；把 `catalog/INDEX.md` 当货架，用时再取。
 
 ## 平台支持（22 个）
 
@@ -236,12 +236,12 @@ commands/MCP 路径为约定推断。
 
 在 Trellis 仓库里，`agents/frontend-craft.md` 绑定 impeccable 的产物：
 PRODUCT.md → `.trellis/spec/product.md`、DESIGN.md → `.trellis/spec/design-system.md`；
-把 `shape → craft → audit+critique → polish` 接进各阶段；并给前端任务上闸门——
+把 `shape → craft → audit+critique → polish` 接进各相位；并给前端任务上闸门——
 `implement.md` 没有 `## Design review` 小节就不能记 READY。
 
 ### ECC（Everything Claude Code）—— 1,703 个组件
 
-最大的社区 agent 组件目录（aitmpl.com）。以下为 `install.py --list`
+最大的社区 agent 组件目录库（aitmpl.com）。以下为 `install.py --list`
 真实统计：
 
 | 类型 | 数量 | 主要分类 | 说明 |
@@ -271,7 +271,7 @@ catalog/
 └── ecc/                # skills agents commands mcps hooks loops mods settings sandbox + LICENSE
 scripts/
 ├── platforms.py        # 22 平台位置表（单一真源）
-├── install.py          # catalog → 平台原生文件
+├── install.py          # 目录库 → 平台原生文件
 ├── build_manifest.py   # 重新生成 manifest.json
 ├── build_index.py      # 重新生成 INDEX.md
 └── sync_upstream.py    # 重新 vendor 上游（--check = 漂移报告）
@@ -298,7 +298,7 @@ npx skills update                          # 使用侧：更新已装技能
 
 ## FAQ
 
-**私有/分叉副本？** 仓库已公开，三通道均无需认证。分叉可 pin 自己的
+**私有/分叉副本？** 仓库已公开，三条通道均无需认证。分叉可 pin 自己的
 快照；把 `--registry` 改成 `gh:you/fork` 即可。
 
 **我在哪个平台？** `install.py --list --platform X` 会打印该平台下

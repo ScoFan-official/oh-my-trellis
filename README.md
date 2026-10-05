@@ -37,7 +37,7 @@ Trellis's `.trellis/` spine so the workflow is enforced, not suggested.
 | The recommended skill set (bridge + all 37 mp skills + impeccable) | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
 | Anything else from the 1,741-asset catalog | `python scripts/install.py --platform <platform> --target <repo>` |
 
-Everything works anonymously — the repo is public. Channels compose freely.
+Repo is public — all three channels work without auth. Mix and match freely.
 
 ### One-sentence install prompt (paste to your agent)
 
@@ -56,8 +56,8 @@ For non-Trellis repos, skip to skills only:
 Skills that say *"publish to the issue tracker"* get pointed at `.trellis/tasks/`.
 Skills that say *"update PRODUCT.md / DESIGN.md"* get pointed at `.trellis/spec/`.
 Path-scoped `paths:` frontmatter means each contract loads exactly when the
-agent touches the files it governs — including the frontend gate: touch a
-`*.tsx` and `frontend-craft.md` arrives; no `## Design review` section in
+agent touches the files it governs — the frontend gate included: touch a `*.tsx`
+and `frontend-craft.md` arrives; no `## Design review` section in
 `implement.md` means no READY.
 
 ```bash
@@ -157,7 +157,7 @@ Flags: `--platform` (required), `--target` (repo root, default `.`),
 | agents (422) | **Delegation**: platform's sub-agent mechanism (Claude `Task`, Codex subagents); auto-delegated on description match or invoked by name. **Skipped on devin/kilo/antigravity** (no primitive — read the body as an inline persona if needed). | "have `security-auditor` review this" |
 | mcps (104) | **Config activation**: merged into platform MCP config, handshake on restart, tools join the toolbox. Most need credentials — fill `<your-...>` placeholders first. | tools just appear |
 
-**Don't bulk-install all 889 skills** — every name+description costs system-prompt space and dilutes matching precision. Use `--only-core` or `--component` picks; browse `catalog/INDEX.md` as the shelf and install per need.
+**Don't bulk-install all 889 skills** — every name+description costs system-prompt space and dilutes matching precision. Use `--only-core` or `--component` picks; treat `catalog/INDEX.md` as the shelf and pull from it as needed.
 
 ## Platform support (22)
 
@@ -305,7 +305,7 @@ changes intentionally. `catalog/` is vendored; never patch it in place.
 ## FAQ
 
 **Private/forked copies?** Repo is public — all three channels work without
-auth. Fork it to pin your own snapshot; change `--registry gh:you/fork`.
+auth. Fork to pin your own snapshot; swap `--registry gh:you/fork`.
 
 **Which platform am I on?** `install.py --list --platform X` prints where each
 asset type lands for that platform before you install anything.

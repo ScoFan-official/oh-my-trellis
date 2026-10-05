@@ -1,6 +1,6 @@
 # Template: agent-workflow
 
-Trellis spec template that makes [mattpocock/skills](https://github.com/mattpocock/skills) treat the Trellis task system as its issue tracker.
+Trellis spec template that points [mattpocock/skills](https://github.com/mattpocock/skills) at the Trellis task system as its issue tracker.
 
 ## What installs
 

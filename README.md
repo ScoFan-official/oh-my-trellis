@@ -1,29 +1,35 @@
-# oh-my-trellis
+<p align="center">
+  <img src="assets/hero.png" alt="oh-my-trellis — mattpocock × ECC × impeccable on one Trellis spine">
+</p>
 
-**English** · [简体中文](./README.zh-CN.md)
+<p align="center">
+  <strong>The agent skill pack with a workflow spine.</strong>
+</p>
 
-A public **asset pack + distribution hub** that fuses four ecosystems —
+<p align="center">
+  <a href="https://github.com/ScoFan-official/oh-my-trellis/stargazers"><img src="https://img.shields.io/github/stars/ScoFan-official/oh-my-trellis?style=flat&colorA=222222&colorB=CB3837" alt="Stars"></a>
+  <img src="https://img.shields.io/badge/catalog-1%2C741%20assets-3FB950?style=flat&colorA=222222" alt="1,741 catalog assets">
+  <img src="https://img.shields.io/badge/platforms-22-58A6FF?style=flat&colorA=222222" alt="22 agent platforms">
+  <img src="https://img.shields.io/badge/upstreams-3-E05735?style=flat&colorA=222222" alt="3 vendored upstreams">
+  <a href="https://github.com/ScoFan-official/oh-my-trellis/commits"><img src="https://img.shields.io/github/last-commit/ScoFan-official/oh-my-trellis?style=flat&colorA=222222" alt="Last commit"></a>
+</p>
+
+<p align="center">
+  <strong>English</strong> · <a href="./README.zh-CN.md">简体中文</a> · vendored under MIT &amp; Apache-2.0 — see <a href="catalog/ATTRIBUTION.md">ATTRIBUTION</a>
+</p>
+
+Advisory skills don't ship design systems — contracts do. oh-my-trellis vendors
 [mattpocock/skills](https://github.com/mattpocock/skills),
-[Everything Claude Code](https://github.com/davila7/claude-code-templates) (ECC),
-[pbakaus/impeccable](https://github.com/pbakaus/impeccable),
-and [Trellis](https://github.com/mindfold-ai/Trellis) — and ships them to
-**22 agent platforms** from a single repo.
+[Everything Claude Code](https://github.com/davila7/claude-code-templates) and
+[pbakaus/impeccable](https://github.com/pbakaus/impeccable) into one repo, then
+binds their loose nouns — "the issue tracker", "PRODUCT.md", "DESIGN.md" — to
+Trellis's `.trellis/` spine so the workflow is enforced, not suggested.
 
-Two things it gives you:
-
-1. **A contract**: mp's engineering skills (`/to-spec`, `/to-tickets`, `/triage`,
-   `/wayfinder`) treat "the issue tracker" as an abstraction — this pack binds
-   it to the Trellis task system, so specs/tickets/labels land in `.trellis/tasks/`.
-   Same trick for impeccable: PRODUCT.md → `.trellis/spec/product.md`,
-   DESIGN.md → `.trellis/spec/design-system.md`, and frontend tasks are gated
-   on a `## Design review` section before they can verify READY.
-2. **A catalog**: all 37 mattpocock skills + the impeccable design skill
-   (24 frontend commands) + all 1,703 ECC components (skills, sub-agents,
-   commands, MCPs, hooks…), installable per platform, per asset, or all at once.
+**3** vendored upstreams · **1,741** catalog assets · **39** default skills · **22** platforms · **1** contract layer — zero patches to vendored files.
 
 ---
 
-## Quick start — pick your channel
+## Install
 
 | You want… | Run |
 | --- | --- |
@@ -45,7 +51,14 @@ For non-Trellis repos, skip to skills only:
 
 ---
 
-## Channel 1 — Trellis spec registry (the contract)
+## 01 · The contract — Trellis spec registry
+
+Skills that say *"publish to the issue tracker"* get pointed at `.trellis/tasks/`.
+Skills that say *"update PRODUCT.md / DESIGN.md"* get pointed at `.trellis/spec/`.
+Path-scoped `paths:` frontmatter means each contract loads exactly when the
+agent touches the files it governs — including the frontend gate: touch a
+`*.tsx` and `frontend-craft.md` arrives; no `## Design review` section in
+`implement.md` means no READY.
 
 ```bash
 trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append
@@ -70,7 +83,7 @@ each contract exactly when the agent touches the files it governs.
 `--append` adds missing files only — safe on existing spec trees.
 After install, the files are yours to edit (Trellis's project-ownership model).
 
-## Channel 2 — skills CLI (the skill set)
+## 02 · The skill set — skills CLI
 
 ```bash
 npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy
@@ -86,7 +99,7 @@ verifies `.trellis/`, installs the channel-1 spec contracts (registry first,
 bundled templates as fallback), appends an `## Agent skills` block to
 `AGENTS.md`, and checks the mp skills are present. No-op afterwards.
 
-## Channel 3 — install.py (the full catalog)
+## 03 · The catalog — install.py
 
 `scripts/install.py` materializes any subset of the catalog into a target repo,
 converted to that platform's native format.

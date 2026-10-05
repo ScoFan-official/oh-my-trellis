@@ -1,28 +1,35 @@
-# oh-my-trellis
+<p align="center">
+  <img src="assets/hero.png" alt="oh-my-trellis — mattpocock × ECC × impeccable，一条 Trellis 主轴">
+</p>
 
-[English](./README.md) · **简体中文**
+<p align="center">
+  <strong>有工作流脊梁的 agent 技能包。</strong>
+</p>
 
-一个公共的**资产包 + 分发枢纽**：融合四个生态——
+<p align="center">
+  <a href="https://github.com/ScoFan-official/oh-my-trellis/stargazers"><img src="https://img.shields.io/github/stars/ScoFan-official/oh-my-trellis?style=flat&colorA=222222&colorB=CB3837" alt="Stars"></a>
+  <img src="https://img.shields.io/badge/catalog-1%2C741%20assets-3FB950?style=flat&colorA=222222" alt="1,741 catalog assets">
+  <img src="https://img.shields.io/badge/platforms-22-58A6FF?style=flat&colorA=222222" alt="22 agent platforms">
+  <img src="https://img.shields.io/badge/upstreams-3-E05735?style=flat&colorA=222222" alt="3 vendored upstreams">
+  <a href="https://github.com/ScoFan-official/oh-my-trellis/commits"><img src="https://img.shields.io/github/last-commit/ScoFan-official/oh-my-trellis?style=flat&colorA=222222" alt="Last commit"></a>
+</p>
+
+<p align="center">
+  <a href="./README.md">English</a> · <strong>简体中文</strong> · vendored 遵循 MIT &amp; Apache-2.0 —— 见 <a href="catalog/ATTRIBUTION.md">ATTRIBUTION</a>
+</p>
+
+advisory 技能运不出设计系统——合约可以。oh-my-trellis 把
 [mattpocock/skills](https://github.com/mattpocock/skills)、
-[Everything Claude Code](https://github.com/davila7/claude-code-templates)（ECC）、
-[pbakaus/impeccable](https://github.com/pbakaus/impeccable)、
-[Trellis](https://github.com/mindfold-ai/Trellis)——从同一个仓库
-分发到 **22 个 agent 平台**。
+[Everything Claude Code](https://github.com/davila7/claude-code-templates) 和
+[pbakaus/impeccable](https://github.com/pbakaus/impeccable) vendor 进同一个仓库，
+再把它们嘴里的抽象名词——"the issue tracker"、"PRODUCT.md"、"DESIGN.md"——
+绑进 Trellis 的 `.trellis/` 主轴，让工作流被强制执行，而不是被建议执行。
 
-它给你两样东西：
-
-1. **一份合约**：mp 工程技能（`/to-spec`、`/to-tickets`、`/triage`、
-   `/wayfinder`）把 "issue tracker" 当抽象接口——本包把它绑定到 Trellis
-   任务系统，spec/ticket/label 全部落进 `.trellis/tasks/`。impeccable 同理：
-   PRODUCT.md → `.trellis/spec/product.md`、DESIGN.md → `.trellis/spec/design-system.md`，
-   且前端任务必须带 `## Design review` 小节才能验证 READY。
-2. **一座目录库**：mp 全部 37 个技能 + impeccable 设计技能（24 条前端命令）+
-   ECC 全部 1,703 个组件（技能、子代理、命令、MCP、hooks…），可按平台、
-   按组件、按全量安装。
+**3** 个 vendored 上游 · **1,741** 个目录资产 · **39** 个默认技能 · **22** 个平台 · **1** 层合约——对 vendored 文件零 patch。
 
 ---
 
-## 快速开始 —— 选你的通道
+## 安装
 
 | 你想要… | 运行 |
 | --- | --- |
@@ -44,7 +51,13 @@
 
 ---
 
-## 通道 1 —— Trellis spec registry（合约）
+## 01 · 合约 —— Trellis spec registry
+
+技能说 "publish to the issue tracker" 时，指到 `.trellis/tasks/`；
+说 "更新 PRODUCT.md / DESIGN.md" 时，指到 `.trellis/spec/`。
+`paths:` frontmatter 按路径作用域注入——每份合约恰好在 agent 触碰它管的文件时加载，
+包括前端闸门：碰 `*.tsx` 就会收到 `frontend-craft.md`；
+`implement.md` 没有 `## Design review` 小节就不算 READY。
 
 ```bash
 trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append
@@ -68,7 +81,7 @@ trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template 
 触碰对应文件时自动注入该合约。`--append` 只补缺省文件，对已有 spec 树安全。
 安装后文件归项目所有（Trellis 项目所有权模型），可自行修改。
 
-## 通道 2 —— skills CLI（技能集）
+## 02 · 技能集 —— skills CLI
 
 ```bash
 npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy
@@ -82,7 +95,7 @@ npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy
 安装通道 1 的 spec 合约（registry 优先、内置模板兜底）、向 `AGENTS.md`
 幂等追加 `## Agent skills` 块、检查 mp 技能是否就位。之后是 no-op。
 
-## 通道 3 —— install.py（全量目录）
+## 03 · 目录库 —— install.py
 
 `scripts/install.py` 把 catalog 中任意子集物化到目标仓库，
 并转换成该平台原生格式。

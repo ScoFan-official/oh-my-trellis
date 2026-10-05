@@ -19,6 +19,7 @@ from platforms import PLATFORMS, MD, MD_AGENT, MD_PERMISSION, MD_ZCODE, TOML, JS
 
 MP_CAT = ROOT / "catalog" / "mattpocock" / "skills"
 ECC_CAT = ROOT / "catalog" / "ecc"
+IMP_CAT = ROOT / "catalog" / "impeccable" / "skills"
 NAMESPACE = "ecc"  # namespace prefix for converted commands
 
 # ---------- frontmatter ----------
@@ -86,10 +87,15 @@ def discover():
                             type={"agents": "agent", "commands": "command",
                                   "mcps": "mcp"}[typedir_name],
                             source="ecc", category=catdir.name, name=f.stem, path=f))
+    if IMP_CAT.exists():
+        for comp in sorted(IMP_CAT.iterdir()):
+            if (comp / "SKILL.md").exists():
+                assets.append(dict(id=f"imp:{comp.name}", type="skill",
+                    source="imp", category="design", name=comp.name, path=comp))
     return assets
 
 def filter_assets(assets, source, types, components, only_core):
-    core = [a for a in assets if a["source"] == "mp" and a["category"] not in ("in-progress", "misc", "deprecated")]
+    core = [a for a in assets if (a["source"] == "mp" and a["category"] not in ("in-progress", "misc", "deprecated")) or a["source"] == "imp"]
     if components:
         pats = [c.lower() for c in components]
         extras = [a for a in assets if any(
@@ -265,9 +271,9 @@ def main():
     ap.add_argument("--platform", choices=sorted(PLATFORMS))
     ap.add_argument("--target", type=Path, default=Path.cwd())
     ap.add_argument("--type", dest="types", nargs="*", choices=["skill", "agent", "command", "mcp"])
-    ap.add_argument("--source", choices=["mp", "ecc"])
+    ap.add_argument("--source", choices=["mp", "ecc", "imp"])
     ap.add_argument("--component", nargs="*", help="ids or names, e.g. 'ecc:security/*' or 'tdd'")
-    ap.add_argument("--only-core", action="store_true", help="just bridge + mattpocock main skills")
+    ap.add_argument("--only-core", action="store_true", help="just bridge + mattpocock main skills + impeccable")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 

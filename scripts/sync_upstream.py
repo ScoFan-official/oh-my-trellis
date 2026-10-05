@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """sync_upstream.py — re-vendor mattpocock/skills + davila7/claude-code-templates
-into catalog/. Sparse-clones to a temp dir, mirrors the subtrees, records SHAs.
+and pbakaus/impeccable into catalog/. Sparse-clones to a temp dir, mirrors the
+subtrees, records SHAs.
 
 Usage: python scripts/sync_upstream.py            # full re-sync
        python scripts/sync_upstream.py --check    # only report drift (no writes)
+       python scripts/sync_upstream.py --only impeccable   # one source only
 """
 
 import argparse, json, shutil, subprocess, sys, tempfile, urllib.request
@@ -12,11 +14,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CAT = ROOT / "catalog"
 
+# cone-mode sparse-checkout rejects file paths; root files (LICENSE, NOTICE)
+# are always checked out anyway
 SOURCES = {
     "mattpocock": dict(repo="https://github.com/mattpocock/skills",
-                       sparse=["skills", "docs", ".claude-plugin", ".agents", "LICENSE"]),
+                       sparse=["skills", "docs", ".claude-plugin", ".agents"]),
     "ecc": dict(repo="https://github.com/davila7/claude-code-templates",
-                sparse=["cli-tool/components", "LICENSE"]),
+                sparse=["cli-tool/components"]),
+    # canonical skill tree lives at .agents/skills; root .impeccable/ is the
+    # repo's own dogfood state, dist/ is release-only — neither is vendored
+    "impeccable": dict(repo="https://github.com/pbakaus/impeccable",
+                       sparse=[".agents/skills/impeccable", "docs"]),
 }
 
 
@@ -50,6 +58,19 @@ def sync(name, check):
         for sub in ("skills", "docs", ".claude-plugin", ".agents"):
             s = src / sub
             if s.exists(): shutil.copytree(s, dest / sub, dirs_exist_ok=True)
+    elif name == "impeccable":
+        s = src / ".agents" / "skills"
+        if s.exists(): shutil.copytree(s, dest / "skills", dirs_exist_ok=True)
+        s = src / "docs"
+        if s.exists(): shutil.copytree(s, dest / "docs", dirs_exist_ok=True)
+        n = src / "NOTICE.md"  # Apache-2.0 §4(d) — carry attribution notices
+        if n.exists(): shutil.copy2(n, dest / "NOTICE.md")
+        # keep the shipped default-set copy in lockstep with the vendored one
+        shipped = ROOT / "skills" / "impeccable"
+        srcskill = dest / "skills" / "impeccable"
+        if srcskill.exists():
+            if shipped.exists(): shutil.rmtree(shipped)
+            shutil.copytree(srcskill, shipped)
     else:
         for s in (src / "cli-tool" / "components").iterdir():
             if s.is_dir(): shutil.copytree(s, dest / s.name, dirs_exist_ok=True)
@@ -63,14 +84,16 @@ def sync(name, check):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--only", choices=sorted(SOURCES), help="sync a single source")
     args = ap.parse_args()
     CAT.mkdir(exist_ok=True)
-    shas = {n: sync(n, args.check) for n in SOURCES}
+    names = [args.only] if args.only else list(SOURCES)
+    shas = {n: sync(n, args.check) for n in names}
     if not args.check:
         meta = CAT / "upstream.json"
-        meta.write_text(json.dumps(
-            {n: {"repo": SOURCES[n]["repo"], "sha": s} for n, s in shas.items()},
-            indent=2) + "\n")
+        prev = json.loads(meta.read_text()) if meta.exists() else {}
+        prev.update({n: {"repo": SOURCES[n]["repo"], "sha": s} for n, s in shas.items()})
+        meta.write_text(json.dumps(prev, indent=2) + "\n")
         print("wrote catalog/upstream.json — run build_manifest.py next")
 
 if __name__ == "__main__":

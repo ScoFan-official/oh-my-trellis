@@ -16,7 +16,7 @@ Files carry `paths:` frontmatter for Trellis dynamic spec loading; without that 
 ## Requires
 
 - mattpocock skills: `npx skills add mattpocock/skills --agent <platform> --copy`
-- The bridge skill for lane rules + bootstrapping: `npx skills add ScoFan-official/mp-trellis-pack --agent <platform> --copy`
+- The bridge skill for lane rules + bootstrapping: `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy`
 
 ## After install
 

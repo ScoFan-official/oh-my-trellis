@@ -8,7 +8,7 @@ Wire in .trellis/config.yaml:
 
     hooks:
       after_archive:
-        - "python ./tools/mp-trellis-pack/hooks/after_archive_inbox_sweep.py"
+        - "python ./tools/oh-my-trellis/hooks/after_archive_inbox_sweep.py"
 """
 
 from __future__ import annotations

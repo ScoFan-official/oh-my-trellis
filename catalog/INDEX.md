@@ -65,6 +65,15 @@ Categories marked *(n)* show component counts.
 | `wait-what` | Stop. That last message did not land: re-pitch it. |
 | `writing-for-agents` | Writing documents for agents. Use when creating or editing skills, or modifying AGENTS.md or CLAUDE.md. |
 
+## Impeccable design (1)
+
+
+### design *(1)*
+
+| Component | When to use |
+| --- | --- |
+| `impeccable` | Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. Covers websites, landing page… |
+
 ## ECC skills (889)
 
 

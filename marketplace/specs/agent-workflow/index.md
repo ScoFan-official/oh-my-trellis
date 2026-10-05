@@ -4,7 +4,7 @@ Conventions that wire mattpocock engineering skills into the Trellis task system
 
 ## Files
 
-- `agents/` — machine-facing contracts the skills consume: issue tracker, triage labels, domain docs. Read `agents/index.md` first.
+- `agents/` — machine-facing contracts the skills consume: issue tracker, triage labels, domain docs, frontend craft (impeccable binding + design-review gate). Read `agents/index.md` first.
 - `guides/mp-integration.md` — how the two workflow systems share phases; lane rules and name-collision precedence.
 
 ## When these apply

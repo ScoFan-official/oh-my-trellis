@@ -31,7 +31,8 @@ def main():
         "sources": {
             "mp":  {"repo": "mattpocock/skills", "license": "MIT"},
             "ecc": {"repo": "davila7/claude-code-templates", "license": "MIT"},
-            "pack": {"repo": "ScoFan-official/mp-trellis-pack"},
+            "imp": {"repo": "pbakaus/impeccable", "license": "Apache-2.0"},
+            "pack": {"repo": "ScoFan-official/oh-my-trellis"},
         },
         "counts": {},
         "assets": [

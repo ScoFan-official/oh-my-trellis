@@ -54,7 +54,8 @@ def main():
            "`description` frontmatter. Regenerate after `sync_upstream.py`.",
            "Categories marked *(n)* show component counts.",
            ""]
-    order = [("mp", "skill", "mattpocock skills"), ("ecc", "skill", "ECC skills"),
+    order = [("mp", "skill", "mattpocock skills"), ("imp", "skill", "Impeccable design"),
+             ("ecc", "skill", "ECC skills"),
              ("ecc", "agent", "ECC sub-agents"), ("ecc", "command", "ECC commands"),
              ("ecc", "mcp", "ECC MCP servers")]
     for src, t, title in order:

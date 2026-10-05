@@ -13,10 +13,10 @@ If `.trellis/spec/agents/issue-tracker.md` is missing, run setup once before usi
 
 1. **Verify Trellis**: `.trellis/scripts/task.py` must exist. If not, stop and tell the user — this bridge only works in Trellis-managed repos.
 2. **Install the spec contracts** — two ways, pick the first that works:
-   - Preferred: `trellis init --registry gh:ScoFan-official/mp-trellis-pack/marketplace --template agent-workflow --append` (installs `agents/` + `guides/` specs, including `paths:` frontmatter for dynamic spec loading). `--append` adds missing files only — safe on existing `.trellis/spec/` trees.
-   - Fallback: copy `templates/issue-tracker.md`, `templates/triage-labels.md`, `templates/domain.md`, `templates/index.md` from this skill's directory into `.trellis/spec/agents/` (create the directory; skip files that already exist and report each skip).
+   - Preferred: `trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append` (installs `agents/` + `guides/` specs, including `paths:` frontmatter for dynamic spec loading). `--append` adds missing files only — safe on existing `.trellis/spec/` trees.
+   - Fallback: copy `templates/issue-tracker.md`, `templates/triage-labels.md`, `templates/domain.md`, `templates/frontend-craft.md`, `templates/index.md` from this skill's directory into `.trellis/spec/agents/` (create the directory; skip files that already exist and report each skip).
 3. **Register the block**: append an `## Agent skills` section to `AGENTS.md` — strictly outside any `TRELLIS:START`/`TRELLIS:END` markers. Skip if the section already exists; create `AGENTS.md` with just that section if the file is missing. Use the block template below.
-4. **Check the skill set**: look for mattpocock skills (`grill-with-docs`, `to-spec`) in this agent's skills directory. If absent, tell the user to run `npx skills add mattpocock/skills --agent <their-platform> --copy` — the bridge is a contract layer, not the skills.
+4. **Check the skill set**: look for mattpocock skills (`grill-with-docs`, `to-spec`) and `impeccable` in this agent's skills directory. If the mp skills are absent, tell the user to run `npx skills add mattpocock/skills --agent <their-platform> --copy`; if `impeccable` is absent, `python <pack>/scripts/install.py --platform <platform> --target . --component imp:impeccable` — the bridge is a contract layer, not the skills.
 5. **Optional hooks**: automation examples live in this skill's own `hooks/` directory. They wire into `.trellis/config.yaml`'s `hooks:` section or per-task `task.json` hooks. Do not edit `config.yaml` unprompted.
 6. **Full asset catalog**: the pack repo also vendors mattpocock + Everything-Claude-Code assets (1,700+: skills/sub-agents/commands/MCPs). Install any subset for 22 platforms via `python <pack>/scripts/install.py --platform <platform> --target <repo>`; see the pack README.
 
@@ -38,6 +38,10 @@ Five-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-fo
 ### Domain docs
 
 Single-context: `GLOSSARY.md` + `docs/adr/` at repo root, created lazily by `/domain-modeling`. See `.trellis/spec/agents/domain.md`.
+
+### Frontend craft
+
+The `impeccable` skill is the design toolchain; its PRODUCT.md/DESIGN.md live at `.trellis/spec/product.md` and `.trellis/spec/design-system.md`. Frontend tasks are gated: `implement.md` needs a `## Design review` section (audit/critique/polish results) before verification can record READY. See `.trellis/spec/agents/frontend-craft.md`.
 ```
 
 ## Lane rules

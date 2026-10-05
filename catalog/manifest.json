@@ -9,8 +9,12 @@
       "repo": "davila7/claude-code-templates",
       "license": "MIT"
     },
+    "imp": {
+      "repo": "pbakaus/impeccable",
+      "license": "Apache-2.0"
+    },
     "pack": {
-      "repo": "ScoFan-official/mp-trellis-pack"
+      "repo": "ScoFan-official/oh-my-trellis"
     }
   },
   "counts": {
@@ -18,7 +22,8 @@
     "ecc/skill": 889,
     "ecc/agent": 422,
     "ecc/command": 288,
-    "ecc/mcp": 104
+    "ecc/mcp": 104,
+    "imp/skill": 1
   },
   "assets": [
     {
@@ -55699,6 +55704,38 @@
         "kimi": ".kimi-code/mcp.json",
         "snow": ".snow/mcp.json",
         "dsh": ".dsh/mcp.json"
+      }
+    },
+    {
+      "id": "imp:impeccable",
+      "type": "skill",
+      "source": "imp",
+      "category": "design",
+      "name": "impeccable",
+      "path": "catalog/impeccable/skills/impeccable",
+      "targets": {
+        "claude": ".claude/skills/impeccable/",
+        "cursor": ".cursor/skills/impeccable/",
+        "opencode": ".opencode/skills/impeccable/",
+        "codex": ".agents/skills/impeccable/",
+        "kiro": ".kiro/skills/impeccable/",
+        "gemini": ".agents/skills/impeccable/",
+        "qoder": ".qoder/skills/impeccable/",
+        "codebuddy": ".codebuddy/skills/impeccable/",
+        "copilot": ".github/skills/impeccable/",
+        "droid": ".factory/skills/impeccable/",
+        "pi": ".agents/skills/impeccable/",
+        "omp": ".omp/skills/impeccable/",
+        "kilo": ".kilocode/skills/impeccable/",
+        "antigravity": ".agent/skills/impeccable/",
+        "devin": ".devin/skills/impeccable/",
+        "reasonix": ".reasonix/skills/impeccable/",
+        "zcode": ".zcode/skills/impeccable/",
+        "trae": ".trae/skills/impeccable/",
+        "grok": ".grok/skills/impeccable/",
+        "kimi": ".kimi-code/skills/impeccable/",
+        "snow": ".snow/skills/impeccable/",
+        "dsh": ".dsh/skills/impeccable/"
       }
     }
   ]

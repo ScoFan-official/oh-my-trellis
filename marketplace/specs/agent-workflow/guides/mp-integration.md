@@ -18,6 +18,18 @@ trellis-update-spec + /domain-modeling + /retro                               �
 task.py archive                                                             │
 ```
 
+Frontend tasks get a second lane, owned by the `impeccable` skill and bound by
+`agents/frontend-craft.md` (auto-injected on frontend file paths):
+
+```
+no spec/product.md → init bootstrap (product truth → .trellis/spec/)          │ think
+prd done → /impeccable shape  → task design.md = surface brief                │ record
+/implement → craft loop; read craft-floor.md before ANY UI edit               │ do
+trellis-check → /impeccable audit + critique                                  │
+verification: implement.md must carry ## Design review, else not READY        │
+finish → /impeccable polish → archive                                         │ distill
+```
+
 On-ramps: external requests → `.scratch/inbox/` → `/triage` → `ready-for-agent` promotes to a task. Fog-level work → `/wayfinder` (map = parent task, decision tickets = child tasks).
 
 ## Lane rules

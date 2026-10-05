@@ -1,10 +1,11 @@
-# mp-trellis-pack
+# oh-my-trellis
 
 [English](./README.md) · **简体中文**
 
-一个公共的**资产包 + 分发枢纽**：融合三个生态——
+一个公共的**资产包 + 分发枢纽**：融合四个生态——
 [mattpocock/skills](https://github.com/mattpocock/skills)、
 [Everything Claude Code](https://github.com/davila7/claude-code-templates)（ECC）、
+[pbakaus/impeccable](https://github.com/pbakaus/impeccable)、
 [Trellis](https://github.com/mindfold-ai/Trellis)——从同一个仓库
 分发到 **22 个 agent 平台**。
 
@@ -12,9 +13,12 @@
 
 1. **一份合约**：mp 工程技能（`/to-spec`、`/to-tickets`、`/triage`、
    `/wayfinder`）把 "issue tracker" 当抽象接口——本包把它绑定到 Trellis
-   任务系统，spec/ticket/label 全部落进 `.trellis/tasks/`。
-2. **一座目录库**：mp 全部 37 个技能 + ECC 全部 1,703 个组件（技能、
-   子代理、命令、MCP、hooks…），可按平台、按组件、按全量安装。
+   任务系统，spec/ticket/label 全部落进 `.trellis/tasks/`。impeccable 同理：
+   PRODUCT.md → `.trellis/spec/product.md`、DESIGN.md → `.trellis/spec/design-system.md`，
+   且前端任务必须带 `## Design review` 小节才能验证 READY。
+2. **一座目录库**：mp 全部 37 个技能 + impeccable 设计技能（24 条前端命令）+
+   ECC 全部 1,703 个组件（技能、子代理、命令、MCP、hooks…），可按平台、
+   按组件、按全量安装。
 
 ---
 
@@ -22,9 +26,9 @@
 
 | 你想要… | 运行 |
 | --- | --- |
-| 只要 Trellis 合约规范 | `trellis init --registry gh:ScoFan-official/mp-trellis-pack/marketplace --template agent-workflow --append` |
-| 推荐技能集（bridge + mp 全量 37 个） | `npx skills add ScoFan-official/mp-trellis-pack --agent <platform> --copy` |
-| 1740 资产目录里的任何东西 | `python scripts/install.py --platform <platform> --target <repo>` |
+| 只要 Trellis 合约规范 | `trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append` |
+| 推荐技能集（bridge + mp 全量 37 个 + impeccable） | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
+| 1741 资产目录里的任何东西 | `python scripts/install.py --platform <platform> --target <repo>` |
 
 仓库已公开，全部通道匿名可用，可自由组合。
 
@@ -32,18 +36,18 @@
 
 把下面这段贴给 Devin / Codex / ZCode / Claude / Cursor，它会自己完成全部初始化：
 
-> 在本仓库安装 Trellis 和 mp-trellis-pack：① 若 `.trellis/` 不存在，先跑 `npx @mindfoldhq/trellis init --guided` 并选择你所在的 agent 平台；② 跑 `trellis init --registry gh:ScoFan-official/mp-trellis-pack/marketplace --template agent-workflow --append` 安装 spec 合约；③ 给你的平台装技能——优先 `npx skills add ScoFan-official/mp-trellis-pack --agent <你的平台> --copy`；若你的平台不被覆盖，改用 `git clone --depth 1 https://github.com/ScoFan-official/mp-trellis-pack /tmp/mtp && python /tmp/mtp/scripts/install.py --platform <你的平台> --target . --only-core`；④ 调用 `mp-trellis-bridge` 技能完成 `AGENTS.md` 播种，然后读 `.trellis/spec/agents/issue-tracker.md`，向我汇报你对 spec、ticket、triage、实现分别会用哪些 tracker 动词。
+> 在本仓库安装 Trellis 和 oh-my-trellis：① 若 `.trellis/` 不存在，先跑 `npx @mindfoldhq/trellis init --guided` 并选择你所在的 agent 平台；② 跑 `trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append` 安装 spec 合约；③ 给你的平台装技能——优先 `npx skills add ScoFan-official/oh-my-trellis --agent <你的平台> --copy`；若你的平台不被覆盖，改用 `git clone --depth 1 https://github.com/ScoFan-official/oh-my-trellis /tmp/mtp && python /tmp/mtp/scripts/install.py --platform <你的平台> --target . --only-core`；④ 调用 `mp-trellis-bridge` 技能完成 `AGENTS.md` 播种，然后读 `.trellis/spec/agents/issue-tracker.md`，向我汇报你对 spec、ticket、triage、实现分别会用哪些 tracker 动词。
 
 非 Trellis 仓库、只要技能时用这个短版：
 
-> 在本仓库安装 mattpocock 技能集：`npx skills add ScoFan-official/mp-trellis-pack --agent <你的平台> --copy`；装好后浏览 https://github.com/ScoFan-official/mp-trellis-pack 的 `catalog/INDEX.md`，如需更多组件用 `scripts/install.py` 按本机平台补装。
+> 在本仓库安装 mattpocock 技能集：`npx skills add ScoFan-official/oh-my-trellis --agent <你的平台> --copy`；装好后浏览 https://github.com/ScoFan-official/oh-my-trellis 的 `catalog/INDEX.md`，如需更多组件用 `scripts/install.py` 按本机平台补装。
 
 ---
 
 ## 通道 1 —— Trellis spec registry（合约）
 
 ```bash
-trellis init --registry gh:ScoFan-official/mp-trellis-pack/marketplace --template agent-workflow --append
+trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append
 ```
 
 安装到 `.trellis/spec/`：
@@ -54,6 +58,7 @@ trellis init --registry gh:ScoFan-official/mp-trellis-pack/marketplace --templat
 │   ├── index.md
 │   ├── issue-tracker.md      # 核心合约——agent 触碰 .trellis/tasks/ 或 .scratch/ 时自动注入
 │   ├── triage-labels.md      # 五角色 → meta.triage / Status: 行——inbox/任务操作时注入
+│   ├── frontend-craft.md     # impeccable 绑定 + Design review 闸门——触碰前端文件时注入
 │   └── domain.md             # GLOSSARY.md + docs/adr/ 约定——编辑 domain 文档时注入
 └── guides/
     └── mp-integration.md     # 阶段映射、车道规则、技能优先级（拉取式文档）
@@ -66,12 +71,12 @@ trellis init --registry gh:ScoFan-official/mp-trellis-pack/marketplace --templat
 ## 通道 2 —— skills CLI（技能集）
 
 ```bash
-npx skills add ScoFan-official/mp-trellis-pack --agent <platform> --copy
+npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy
 ```
 
-安装 **38 个技能**——`mp-trellis-bridge` + mattpocock 全集
-（engineering / productivity / misc / in-progress）。`--agent` 支持
-`devin`、`codex`、`claude`、`cursor` 等 skills CLI 识别的平台。
+安装 **39 个技能**——`mp-trellis-bridge` + mattpocock 全集
+（engineering / productivity / misc / in-progress）+ `impeccable` 前端设计工作流。
+`--agent` 支持 `devin`、`codex`、`claude`、`cursor` 等 skills CLI 识别的平台。
 
 `mp-trellis-bridge` 是自举器 + 路由合约：首次加载时验证 `.trellis/`、
 安装通道 1 的 spec 合约（registry 优先、内置模板兜底）、向 `AGENTS.md`
@@ -167,7 +172,7 @@ commands/MCP 路径为约定推断。
 ## 资产目录明细
 
 **每个组件的"何时使用"**：见 [`catalog/INDEX.md`](catalog/INDEX.md)——
-自动生成的索引，1,740 个组件每个都带自己的 description
+自动生成的索引，1,741 个组件每个都带自己的 description
 （"use when…"），抽取自源文件 frontmatter。
 重新生成：`python scripts/build_index.py`。
 
@@ -207,6 +212,20 @@ commands/MCP 路径为约定推断。
 | `git-guardrails-claude-code`、`migrate-to-shoehorn`、`scaffold-exercises`、`setup-pre-commit` | misc——平台特定或小众。 |
 | `mp-trellis-bridge` | **本包自建**。把以上全部绑定到 Trellis 的合约 + 路由器。 |
 
+### impeccable —— 1 个技能，24 条命令（前端设计）
+
+[pbakaus/impeccable](https://github.com/pbakaus/impeccable)，Apache-2.0——
+前端精工工作流。本包只 vendor **markdown 层**：`/impeccable <cmd>` 技能
+（`shape`、`craft`、`critique`、`audit`、`polish`、`bolder`、`typeset`…）
+在所有平台可用；61 条确定性检测规则、`live`、`generate`、`hooks`、`doctor`
+及 `impeccable context` 启动器需要上游引擎——在目标项目跑
+`npx impeccable install`。没装引擎时命令走技能自带的 degraded 降级模式。
+
+在 Trellis 仓库里，`agents/frontend-craft.md` 绑定 impeccable 的产物：
+PRODUCT.md → `.trellis/spec/product.md`、DESIGN.md → `.trellis/spec/design-system.md`；
+把 `shape → craft → audit+critique → polish` 接进各阶段；并给前端任务上闸门——
+`implement.md` 没有 `## Design review` 小节就不能记 READY。
+
 ### ECC（Everything Claude Code）—— 1,703 个组件
 
 最大的社区 agent 组件目录（aitmpl.com）。以下为 `install.py --list`
@@ -228,13 +247,14 @@ commands/MCP 路径为约定推断。
 
 ```
 marketplace/            # 通道 1：Trellis spec registry（index.json + agent-workflow）
-skills/                 # 通道 2：npx-skills 安装面——bridge + mp 全量 37 技能
+skills/                 # 通道 2：npx-skills 安装面——bridge + mp 全量 37 技能 + impeccable
 catalog/
 ├── INDEX.md            # 生成：每个组件 + 使用场景
 ├── manifest.json       # 生成：每个资产 → 各平台目标路径
 ├── upstream.json       # 上游 pin 的 SHA
 ├── ATTRIBUTION.md      # MIT 出处
 ├── mattpocock/         # skills(4 合集) + docs + .claude-plugin + .agents + LICENSE
+├── impeccable/         # skills/impeccable + docs + LICENSE + NOTICE.md（Apache-2.0）
 └── ecc/                # skills agents commands mcps hooks loops mods settings sandbox + LICENSE
 scripts/
 ├── platforms.py        # 22 平台位置表（单一真源）

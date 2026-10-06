@@ -40,7 +40,7 @@ jobs:
         working-directory: fork
         run: |
           pnpm install --frozen-lockfile
-          pnpm --filter oh-my-trellis build
+          pnpm --filter oh-my-trellis... build
 
       - name: Pack CLI
         working-directory: fork/packages/cli

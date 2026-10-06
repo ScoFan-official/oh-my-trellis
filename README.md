@@ -43,7 +43,7 @@ Repo is public — all three channels work without auth. Mix and match freely.
 
 Hand this to Devin / Codex / ZCode / Claude / Cursor and it will set everything up itself:
 
-> Set up Trellis and oh-my-trellis in this repo: ① if `.trellis/` doesn't exist, run `npx @mindfoldhq/trellis init --guided` choosing this agent's platform; ② run `trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append` to install the spec contracts; ③ install the skills for YOUR platform — prefer `npx skills add ScoFan-official/oh-my-trellis --agent <your-platform> --copy`; if your platform isn't covered, run `git clone --depth 1 https://github.com/ScoFan-official/oh-my-trellis /tmp/mtp && python /tmp/mtp/scripts/install.py --platform <your-platform> --target . --only-core` instead; ④ invoke the `mp-trellis-bridge` skill so it finishes seeding `AGENTS.md`, then read `.trellis/spec/agents/issue-tracker.md` and report back which tracker verbs you'll use for specs, tickets, triage and implementation.
+> Set up Trellis and oh-my-trellis in this repo: ① install our Trellis CLI and init — `npm i -g https://github.com/ScoFan-official/trellis/releases/download/v0.6.17-ohmy.1/oh-my-trellis-0.6.17-ohmy.1.tgz` (if `@mindfoldhq/trellis` is already installed globally, `npm rm -g @mindfoldhq/trellis` first — our package owns the `trellis` bin), then `trellis init --devin` — registry and workflow defaults are baked into the fork; ② run `trellis init --template agent-workflow --append` to install the spec contracts; ③ install the skills for YOUR platform — prefer `npx skills add ScoFan-official/oh-my-trellis --agent <your-platform> --copy`; if your platform isn't covered, run `git clone --depth 1 https://github.com/ScoFan-official/oh-my-trellis /tmp/mtp && python /tmp/mtp/scripts/install.py --platform <your-platform> --target . --only-core` instead; ④ invoke the `mp-trellis-bridge` skill so it finishes seeding `AGENTS.md`, then read `.trellis/spec/agents/issue-tracker.md` and report back which tracker verbs you'll use for specs, tickets, triage and implementation. To update later, invoke the `oh-my-update` skill.
 
 For non-Trellis repos, skip to skills only:
 
@@ -285,11 +285,18 @@ scripts/
 
 ## Updating
 
+Consumers: single entry point — the **`/oh-my-update`** workflow (Devin) or
+the `oh-my-update` skill (`skills/oh-my-update/`). It checks the fork CLI
+against `ScoFan-official/trellis` releases, refreshes installed skills and
+appends spec contracts, with a confirm gate. Layer-specific fallback:
+`npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy`.
+
+Pack maintainers (re-vendoring upstreams):
+
 ```bash
 python scripts/sync_upstream.py --check   # did upstreams move?
 python scripts/sync_upstream.py           # re-vendor catalog/ (overwrites catalog only)
 python scripts/build_manifest.py && python scripts/build_index.py
-npx skills update                          # consumer side: update installed skills
 ```
 
 Installed spec files are project-owned (Trellis model) — merge upstream spec

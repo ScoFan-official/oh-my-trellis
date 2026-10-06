@@ -43,7 +43,7 @@ advisory 技能运不出设计系统——合约可以。oh-my-trellis 把
 
 把下面这段贴给 Devin / Codex / ZCode / Claude / Cursor，它会自己完成全部初始化：
 
-> 在本仓库安装 Trellis 和 oh-my-trellis：① 若 `.trellis/` 不存在，先跑 `npx @mindfoldhq/trellis init --guided` 并选择你所在的 agent 平台；② 跑 `trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append` 安装 spec 合约；③ 给你的平台装技能——优先 `npx skills add ScoFan-official/oh-my-trellis --agent <你的平台> --copy`；若你的平台不被覆盖，改用 `git clone --depth 1 https://github.com/ScoFan-official/oh-my-trellis /tmp/mtp && python /tmp/mtp/scripts/install.py --platform <你的平台> --target . --only-core`；④ 调用 `mp-trellis-bridge` 技能完成 `AGENTS.md` 播种，然后读 `.trellis/spec/agents/issue-tracker.md`，向我汇报你对 spec、ticket、triage、实现分别会用哪些 tracker 动词。
+> 在本仓库安装 Trellis 和 oh-my-trellis：① 装我们的 Trellis CLI 并初始化——`npm i -g https://github.com/ScoFan-official/trellis/releases/download/v0.6.17-ohmy.1/oh-my-trellis-0.6.17-ohmy.1.tgz`（若已全局安装 `@mindfoldhq/trellis` 需先 `npm rm -g @mindfoldhq/trellis`——本包占用 `trellis` bin），然后 `trellis init --devin`——registry 与默认 workflow 已内嵌在 fork 里；② 跑 `trellis init --template agent-workflow --append` 安装 spec 合约；③ 给你的平台装技能——优先 `npx skills add ScoFan-official/oh-my-trellis --agent <你的平台> --copy`；若你的平台不被覆盖，改用 `git clone --depth 1 https://github.com/ScoFan-official/oh-my-trellis /tmp/mtp && python /tmp/mtp/scripts/install.py --platform <你的平台> --target . --only-core`；④ 调用 `mp-trellis-bridge` 技能完成 `AGENTS.md` 播种，然后读 `.trellis/spec/agents/issue-tracker.md`，向我汇报你对 spec、ticket、triage、实现分别会用哪些 tracker 动词。之后要更新，调用 `oh-my-update` 技能。
 
 非 Trellis 仓库、只要技能时用这个短版：
 
@@ -279,11 +279,18 @@ scripts/
 
 ## 更新方式
 
+使用侧：单一入口——**`/oh-my-update`** workflow（Devin）或 `oh-my-update`
+技能（`skills/oh-my-update/`）。它检查 fork CLI 在
+`ScoFan-official/trellis` 的最新 release、刷新已装技能并补装 spec 合约，
+动手前有确认闸门。分层兜底：
+`npx skills add ScoFan-official/oh-my-trellis --agent <平台> --copy`。
+
+本包维护侧（重新 vendor 上游）：
+
 ```bash
 python scripts/sync_upstream.py --check   # 上游动了吗？
 python scripts/sync_upstream.py           # 重新 vendor catalog/（只覆盖 catalog）
 python scripts/build_manifest.py && python scripts/build_index.py
-npx skills update                          # 使用侧：更新已装技能
 ```
 
 已安装 spec 归项目所有（Trellis 模型）——上游 spec 变更需人工合并。

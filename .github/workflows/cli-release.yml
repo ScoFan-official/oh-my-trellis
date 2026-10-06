@@ -1,0 +1,52 @@
+name: cli-release
+
+# Canonical CLI distribution: the fork (ScoFan-official/trellis) is the
+# source/build workspace only. This pipeline rebuilds the CLI from the
+# matching public fork tag and publishes the tarball here, so pack releases
+# (vX.Y.Z) and CLI releases (cli-v<upstream>-ohmy.<N>) share one user-facing
+# releases page.
+on:
+  push:
+    tags: ["cli-v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  cli-tarball:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Derive fork tag
+        id: fork
+        # cli-v0.6.17-ohmy.2 -> v0.6.17-ohmy.2
+        run: echo "tag=${GITHUB_REF_NAME#cli-}" >> "$GITHUB_OUTPUT"
+
+      - name: Clone fork at the matching tag
+        run: |
+          git clone --depth 1 --branch "${{ steps.fork.outputs.tag }}" \
+            https://github.com/ScoFan-official/trellis.git fork
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+          cache-dependency-path: fork/pnpm-lock.yaml
+
+      - name: Install + build
+        working-directory: fork
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm --filter oh-my-trellis build
+
+      - name: Pack CLI
+        working-directory: fork/packages/cli
+        run: pnpm pack --pack-destination "$GITHUB_WORKSPACE"
+
+      - name: Create release with asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "$GITHUB_REF_NAME" oh-my-trellis-*.tgz --generate-notes

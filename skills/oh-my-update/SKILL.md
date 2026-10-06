@@ -14,14 +14,22 @@ flow ships as the `/oh-my-update` workflow.)
 
 ```bash
 trellis --version
-gh api repos/ScoFan-official/trellis/releases/latest
+gh api repos/ScoFan-official/oh-my-trellis/releases
 ```
+
+CLI releases live on `ScoFan-official/oh-my-trellis` tagged `cli-v<ver>`
+(e.g. `cli-v0.6.17-ohmy.2`). The pack's own `vX.Y.Z` releases share the same
+list — filter `tag_name` on the `cli-v` prefix and pick the newest match.
+Do NOT use `/releases/latest`: it can resolve to a pack release.
 
 Record:
 
-- `current` = the version `trellis --version` prints (e.g. `0.6.17-ohmy.1`)
-- `latest` = `tag_name` from the release response, minus a leading `v`
-- `tarball` = the `browser_download_url` of the `.tgz` asset in `assets`
+- `current` = the version `trellis --version` prints (e.g. `0.6.17-ohmy.2`)
+- `latest` = the newest `cli-v*` `tag_name`, minus the `cli-v` prefix
+  (e.g. `0.6.17-ohmy.2`)
+- `tarball` =
+  `https://github.com/ScoFan-official/oh-my-trellis/releases/download/cli-v<latest>/oh-my-trellis-<latest>.tgz`
+  (or the `.tgz` asset's `browser_download_url` from the release response)
 
 If `gh` is unavailable or the API call fails, stop and report — do not guess
 the latest version.
@@ -30,8 +38,8 @@ Also check pack freshness (skills layer): the skills CLI lock records the
 hash this repo's skills were installed at — inspect `skills-lock.json`
 (project root) and diff it against the remote pack state; `npx skills`
 reports the same drift when you ask it to update. If the lock's recorded
-source/hash is behind `ScoFan-official/oh-my-trellis@master` (or the pack's
-latest `v*` tag / `VERSION`), the skills layer is stale too.
+source/hash is behind `ScoFan-official/oh-my-trellis@main` (or the pack's
+latest pack `v*` tag / `VERSION`), the skills layer is stale too.
 
 ## Step 2: Summarize the update
 

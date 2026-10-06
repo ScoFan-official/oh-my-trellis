@@ -8,6 +8,24 @@ skills/assets/templates added, **patch** = fixes to existing content.
 `VERSION` at the repo root is the source of truth; each release is tagged
 `vX.Y.Z`.
 
+## 1.1.0
+
+CLI distribution moves in-house — this repo is now the single user-facing
+release surface for both the pack and the `oh-my-trellis` CLI.
+
+- `.github/workflows/cli-release.yml` — new pipeline: a `cli-v<ver>` tag push
+  clones the public fork (`ScoFan-official/trellis`) at the matching `v<ver>`
+  tag, builds `oh-my-trellis` with pnpm, packs the tarball and publishes it as
+  a `cli-v*` release asset here. Pack releases (`vX.Y.Z`) and CLI releases
+  (`cli-v*`) now share one releases page; `cli-v*` tags are not pack releases.
+- `skills/oh-my-update` + both READMEs repointed: version checks filter
+  `cli-v*` tags on `repos/ScoFan-official/oh-my-trellis/releases` (never
+  `/releases/latest` — pack releases share the list), and install URLs moved
+  to `releases/download/cli-v<ver>/oh-my-trellis-<ver>.tgz`. Fork-hosted CLI
+  releases are deprecated.
+- Requires fork `0.6.17-ohmy.2` or later for the matching update-side fix
+  (same repointing + `X.Y.Z-ohmy.N` >= `X.Y.Z` comparison).
+
 ## 1.0.0
 
 First versioned release of the pack.

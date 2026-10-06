@@ -49,4 +49,4 @@ jobs:
       - name: Create release with asset
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release create "$GITHUB_REF_NAME" oh-my-trellis-*.tgz --generate-notes
+        run: gh release create "$GITHUB_REF_NAME" oh-my-trellis-*.tgz --generate-notes --repo "${{ github.repository }}"

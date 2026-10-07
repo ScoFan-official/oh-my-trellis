@@ -8,6 +8,15 @@ skills/assets/templates added, **patch** = fixes to existing content.
 `VERSION` at the repo root is the source of truth; each release is tagged
 `vX.Y.Z`.
 
+## Unreleased
+
+- `skills/trellis-domains/` — thin-shell operator skill for the
+  `.trellis/domains/` domain layer shipped by fork `cli-v*` template
+  releases: routes 归口 / 旗 / 接手 / 收工 / 对账 situations to the
+  repo-internal authority texts (`DISCIPLINE.md`, `WORKLOG-PROTOCOL.md`,
+  `REGISTRY.md`, per-board artifacts) and carries checklist-level indexes
+  only — protocol text lives in the consuming repo, never duplicated here.
+
 ## 1.1.0
 
 CLI distribution moves in-house — this repo is now the single user-facing

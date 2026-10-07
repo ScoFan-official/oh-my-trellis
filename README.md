@@ -25,7 +25,7 @@ Advisory skills don't ship design systems — contracts do. oh-my-trellis vendor
 binds their loose nouns — "the issue tracker", "PRODUCT.md", "DESIGN.md" — to
 Trellis's `.trellis/` spine so the workflow is enforced, not suggested.
 
-**3** vendored upstreams · **1,741** catalog assets · **39** default skills · **22** platforms · **1** contract layer — zero patches to vendored files.
+**3** vendored upstreams · **1,741** catalog assets · **41** default skills · **22** platforms · **1** contract layer — zero patches to vendored files.
 
 ---
 
@@ -34,7 +34,7 @@ Trellis's `.trellis/` spine so the workflow is enforced, not suggested.
 | You want… | Run |
 | --- | --- |
 | The Trellis contract specs only | `trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append` |
-| The recommended skill set (bridge + all 37 mp skills + impeccable) | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
+| The recommended skill set (all 37 mp skills + impeccable + the pack's own `mp-trellis-bridge` / `oh-my-update` / `trellis-domains`) | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
 | Anything else from the 1,741-asset catalog | `python scripts/install.py --platform <platform> --target <repo>` |
 
 Repo is public — all three channels work without auth. Mix and match freely.
@@ -89,9 +89,10 @@ After install, the files are yours to edit (Trellis's project-ownership model).
 npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy
 ```
 
-Installs **39 skills** — `mp-trellis-bridge` plus mattpocock's full collection
+Installs **41 skills** — mattpocock's full collection
 (engineering, productivity, misc, in-progress) plus `impeccable`, the frontend
-design workflow. `--agent` accepts `devin`, `codex`, `claude`, `cursor`, and
+design workflow, plus the pack's own `mp-trellis-bridge`, `oh-my-update` and
+`trellis-domains`. `--agent` accepts `devin`, `codex`, `claude`, `cursor`, and
 the other platforms the skills CLI knows.
 
 `mp-trellis-bridge` is a bootstrapper + routing contract: on first load it
@@ -194,7 +195,7 @@ an auto-generated index where every one of the 1,741 components carries its
 own description ("use when…") extracted from its source frontmatter.
 Regenerate with `python scripts/build_index.py`.
 
-### mattpocock skills — 37 (+ the bridge)
+### mattpocock skills — 37 (+ the pack's own)
 
 The engineering spine of the pack. Main flow: *grill → spec → tickets →
 implement → retro*, with two intake ramps and standalone utilities.
@@ -229,6 +230,8 @@ implement → retro*, with two intake ramps and standalone utilities.
 | `claude-handoff`, `loop-me`, `setup-ts-deep-modules`, `writing-beats`, `writing-fragments`, `writing-shape` | in-progress collection — usable but less polished. |
 | `git-guardrails-claude-code`, `migrate-to-shoehorn`, `scaffold-exercises`, `setup-pre-commit` | misc — platform-specific or niche. |
 | `mp-trellis-bridge` | **Ours.** The contract + router binding all of the above to Trellis. |
+| `oh-my-update` | **Ours.** Gate-checked update of the whole stack — fork CLI, `.trellis/` templates, installed skills, `.trellis/spec/` — to the latest ScoFan-official releases. |
+| `trellis-domains` | **Ours.** Thin shell over the `.trellis/domains/` layer — 归口 routing, board flag, takeover read-chain, worklog/收工 and 对账 checklists that point at the repo's `DISCIPLINE.md` / `WORKLOG-PROTOCOL.md` / `REGISTRY.md` (the protocol text never lives here). |
 
 ### impeccable — 1 skill, 24 commands (frontend design)
 
@@ -266,7 +269,7 @@ Every component's when-to-use: [`catalog/INDEX.md`](catalog/INDEX.md).
 
 ```
 marketplace/            # channel 1: Trellis spec registry (index.json + agent-workflow)
-skills/                 # channel 2: npx-skills surface — bridge + 37 mp skills + impeccable
+skills/                 # channel 2: npx-skills surface — pack-owned skills + 37 mp skills + impeccable
 catalog/
 ├── INDEX.md            # generated: every component + when-to-use
 ├── manifest.json       # generated: every asset → per-platform target paths

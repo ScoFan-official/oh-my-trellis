@@ -10,6 +10,30 @@ skills/assets/templates added, **patch** = fixes to existing content.
 
 ## Unreleased
 
+Slice-7 contract sync: the runner era (`trellis run`, CLAI-8) gets an operator
+shell skill, and the delivery text now describes tiers that exist.
+
+- `skills/trellis-run/` — **new**. Thin-shell operator skill for
+  `trellis run`: when the loop is the right tool, what the tier and
+  `delivery.auto_push_refs` must already allow, what each stop reason
+  (`cycle` / `fail_threshold` / `push_refused` / `delivery_deferred` /
+  `no_grabbable_ticket`) asks of you, and why the run ledger is a trace rather
+  than a reconciliation source. Protocol text stays in the consuming repo.
+- Skill count 41 → 42 (both READMEs: install line, quick-start table, skill
+  table).
+- `guides/mp-integration.md`: new unattended lane — per-ticket worktree, worker,
+  verify, `delivery-gate` before any remote touch, the four stop lines, and the
+  two properties that matter (the loop never writes to the launching repo;
+  PR ≠ delivery, only a human merge closes the board row).
+- `skills/trellis-domains/`: always-stop is now phrased for three tiers
+  (`gated` / `hands-off` / `supervised-delivery`), with the explicit note that
+  the new tier authorizes a whitelisted push and a ready-for-review PR — never a
+  merge, tag, release or deploy.
+- Prerequisite landed fork-side (not pack content): CLAI-8
+  `task.py delivery-gate` + the third tier in `.trellis/config.yaml`, D5
+  `trellis run`, and D8's platform-resolved writer identity. The pack describes
+  them; the fork CLI ships them.
+
 Slice-5 contract alignment: the agent-workflow template now describes the
 delivery mechanism that actually exists (index-driven spec injection), and the
 tracker/frontend contracts match the fork CLI's mechanical gates.

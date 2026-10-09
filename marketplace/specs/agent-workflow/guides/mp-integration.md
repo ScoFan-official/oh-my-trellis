@@ -18,6 +18,27 @@ trellis-update-spec + /domain-modeling + /retro                               �
 task.py archive                                                               │
 ```
 
+Unattended lane — available once the repo sets `autonomy: supervised-delivery`
+and a non-empty `delivery.auto_push_refs`. `trellis run` takes the frontier head
+per ticket, gives it a worktree and one headless worker, runs the ticket's own
+verify contract, then asks `task.py delivery-gate <branch>` before touching a
+remote:
+
+```
+trellis run --until-empty --board <slug> --provider <claude|codex>
+  → worktree → worker → run-verify → delivery-gate → push branch → ready PR → archive
+  stop lines: cycle · 3 consecutive failures (ticket → triage=ready-for-human)
+              · protected or unlisted ref → refused, the whole line halts
+              · tier refuses push → deferred: verified work stays on its branch
+```
+
+Two properties to keep in mind: the loop never writes to the repo it is launched
+from (ticket state changes are commits on the ticket branch, so a bad run is one
+`git revert` away), and **PR ≠ 交付** — a board row closes only when a human
+merges. `.trellis/.runtime/runs/*.jsonl` is the run ledger: one line per action
+for the worklog's 验证 field, never a reconciliation source. The `trellis-run`
+skill carries the operator checklist.
+
 Frontend tasks get a second lane, owned by the `impeccable` skill and bound by
 `agents/frontend-craft.md` (delivered via the agents index; its design-review
 gate is mechanical at `archive`):

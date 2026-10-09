@@ -52,7 +52,7 @@ an uncommitted flag, progress tick or log entry does not exist
 - [ ] Truly domain-less (whitelist in §1) → leave `meta.domain` empty; a
       `Domain: none（<reason>）` line atop `prd.md` is still mandatory.
 - [ ] Cannot answer "who owns this" → STOP and ask the user — an always-stop
-      rule; both autonomy modes block.
+      rule; every autonomy tier blocks.
 
 ## 旗 — taking / releasing a board flag (DISCIPLINE.md §2)
 
@@ -73,7 +73,7 @@ an uncommitted flag, progress tick or log entry does not exist
 
 - [ ] Valid flag (not yours, still fresh) → do not touch the board or its
       tasks' product code; report who holds it, since when, and in which
-      context; then wait — an always-stop rule in both modes.
+      context; then wait — an always-stop rule in every tier.
 - [ ] Stale judgement = the three anchors in §2 (flag timestamp · last
       `git log` activity on the board dir · that writer's newest worklog
       entry). Self-check the facts; do not ask others for them.
@@ -124,9 +124,11 @@ an uncommitted flag, progress tick or log entry does not exist
 - [ ] Discrepancy → log it and the adopted correction in your own worklog;
       fix the progress table to match the evidence.
 
-## Always-stop (both autonomy modes — DISCIPLINE.md §4)
+## Always-stop (every autonomy tier — DISCIPLINE.md §4)
 
 Ask the user before: destructive/irreversible operations · credentials or real
 external side-effects · acting over a valid flag · proceeding when ownership
-is unanswerable. A user's explicit stop overrides any autonomy setting; log
+is unanswerable. `supervised-delivery` changes nothing here: it authorizes a
+whitelisted push and a ready-for-review PR, never a merge, a tag, a release or a
+deploy. A user's explicit stop overrides any autonomy setting; log
 mode switches in the journal.

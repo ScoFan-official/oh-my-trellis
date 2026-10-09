@@ -34,7 +34,7 @@ advisory 技能运不出设计系统——合约可以。oh-my-trellis 把
 | 你想要… | 运行 |
 | --- | --- |
 | 只要 Trellis 合约规范 | `trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append` |
-| 推荐技能集（mp 全量 37 个 + impeccable + 本包自建 `mp-trellis-bridge` / `oh-my-update` / `trellis-domains`） | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
+| 推荐技能集（mp 全量 37 个 + impeccable + 本包自建 `mp-trellis-bridge` / `oh-my-update` / `trellis-domains` / `trellis-run`） | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
 | 1741 资产目录库里的任何东西 | `python scripts/install.py --platform <platform> --target <repo>` |
 
 仓库已公开，三条通道均无需认证，可自由组合。
@@ -89,9 +89,9 @@ agent 顺清单读合约——合约本身是拉取式文档，没有解析按�
 npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy
 ```
 
-安装 **41 个技能**——mattpocock 全集
+安装 **42 个技能**——mattpocock 全集
 （engineering / productivity / misc / in-progress）+ `impeccable` 前端设计工作流
-+ 本包自建 `mp-trellis-bridge`、`oh-my-update`、`trellis-domains`。
++ 本包自建 `mp-trellis-bridge`、`oh-my-update`、`trellis-domains`、`trellis-run`。
 `--agent` 支持 `devin`、`codex`、`claude`、`cursor` 等 skills CLI 识别的平台。
 
 `mp-trellis-bridge` 是自举器 + 路由合约：首次加载时验证 `.trellis/`、
@@ -229,6 +229,7 @@ commands/MCP 路径为约定推断。
 | `mp-trellis-bridge` | **本包自建**。把以上全部绑定到 Trellis 的合约 + 路由器。 |
 | `oh-my-update` | **本包自建**。确认门后的整栈更新——fork CLI、`.trellis/` 模板、已装技能、`.trellis/spec/` 合约——升到 ScoFan-official 最新 release。 |
 | `trellis-domains` | **本包自建**。`.trellis/domains/` 板块层的薄壳——归口、插旗、接手读档链、worklog/收工、对账检查清单，逐条指回仓内 `DISCIPLINE.md` / `WORKLOG-PROTOCOL.md` / `REGISTRY.md`（协议正文不住这里）。 |
+| `trellis-run` | **本包自建**。`trellis run`（frontier 无人值守循环）的薄壳——什么时候该交给循环、档位与 `delivery.auto_push_refs` 要先允许什么、run ledger 在哪（以及它为何不是对账源）、每种停线原因在等你做什么。 |
 
 ### impeccable —— 1 个技能，24 条命令（前端设计）
 

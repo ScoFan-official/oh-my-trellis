@@ -8,7 +8,7 @@ skills/assets/templates added, **patch** = fixes to existing content.
 `VERSION` at the repo root is the source of truth; each release is tagged
 `vX.Y.Z`.
 
-## Unreleased
+## 1.2.0 — 2026-10-07
 
 - `skills/trellis-domains/` — thin-shell operator skill for the
   `.trellis/domains/` domain layer shipped by fork `cli-v*` template

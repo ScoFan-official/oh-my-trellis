@@ -1,18 +1,6 @@
 ---
 name: frontend-craft
 description: "Frontend craft contract: binds the impeccable skill (design commands, PRODUCT.md/DESIGN.md artifacts) to the Trellis pipeline — product truth and the design system live in .trellis/spec/, shape→craft→audit→polish are wired into phases, and frontend tasks cannot verify READY without a Design review section. Consulted whenever frontend files are touched."
-paths:
-  - "**/*.tsx"
-  - "**/*.jsx"
-  - "**/*.vue"
-  - "**/*.svelte"
-  - "**/*.astro"
-  - "**/*.css"
-  - "**/*.scss"
-  - "**/*.less"
-  - "**/*.html"
-  - ".trellis/spec/product.md"
-  - ".trellis/spec/design-system.md"
 ---
 
 # Frontend craft: impeccable × Trellis
@@ -66,10 +54,10 @@ When the launcher is absent or fails, follow the SKILL.md "Launcher unavailable"
 
 ## The gate — design review is not optional
 
-A task is **frontend** when files it touched match the `paths:` globs above, or `meta.frontend` is set (`task.py set-meta <dir> frontend true|false` overrides detection either way).
+A task is **frontend** when `meta.frontend` says so (`task.py set-meta <dir> frontend true|false` — an explicit value overrides both ways) or, absent that, when the task branch's diff touches one of the frontend suffixes (`.tsx` `.jsx` `.vue` `.svelte` `.astro` `.css` `.scss` `.less` `.html`) or one of the spec files (`.trellis/spec/product.md`, `.trellis/spec/design-system.md`). The diff-based detection is best-effort by design: undetectable frontend-ness (no branch metadata, refs gone) fails open and never blocks archive.
 
 Before a frontend task may record READY in verification (or be archived): its `implement.md` must contain a `## Design review` section recording — which of `audit`/`critique`/`polish` ran (and whether engine or degraded), the findings that mattered, and how each was disposed (fixed / deferred-with-reason / rejected-with-reason). An empty "no findings" entry is valid only if the commands actually ran.
 
-Missing section ⇒ not READY; report it as a spec violation, same weight as a failing lint. This is a **contract gate**: enforcement lives in `verification-loop`/`trellis-check` honoring this spec, not in CI. Humans can override by writing the section with an explicit skip justification — the artifact is the point, not the verdict.
+Missing section ⇒ `task.py archive` refuses the task (CLAI-7); treat it as a spec violation, same weight as a failing lint. This is a **contract gate** with mechanical enforcement: `verification-loop`/`trellis-check` honor it before archive, and the CLI backs them after. There is no force flag — if no review applies, write that inside the section (or declare `frontend=false`); the artifact is the point, not the verdict.
 
 If the `impeccable` skill itself is absent from this agent's skills dir, say so and stop — do not improvise a substitute design review. Install it via the pack (`install.py --component imp:impeccable` or the default skill set).

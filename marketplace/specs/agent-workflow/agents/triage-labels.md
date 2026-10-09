@@ -1,9 +1,6 @@
 ---
 name: agent-triage-labels
 description: "Triage label vocabulary for mattpocock skills and where each role is stored: task meta.triage for Trellis tasks, Status: lines for .scratch/inbox files."
-paths:
-  - ".scratch/"
-  - ".trellis/tasks/"
 ---
 
 # Triage label vocabulary

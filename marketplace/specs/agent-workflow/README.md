@@ -4,14 +4,18 @@ Trellis spec template that points [mattpocock/skills](https://github.com/mattpoc
 
 ## What installs
 
-| Spec file | Injected when the agent touches |
+| Spec file | Reached via |
 | --- | --- |
-| `agents/issue-tracker.md` | `.trellis/tasks/`, `.scratch/` — the noun/verb contract: spec → task dir, ticket → child task + `blocked_by` meta, triage role → task meta, wayfinder map → parent `map.md` |
-| `agents/triage-labels.md` | `.scratch/`, `.trellis/tasks/` — the five-role vocabulary and its `meta.triage` mapping |
-| `agents/domain.md` | `GLOSSARY.md`, `docs/adr/`, `.trellis/spec/` — single-context domain doc conventions |
-| `guides/mp-integration.md` | pull only — phase map, lane rules, skill precedence |
+| `agents/index.md` | injected by the session-start hook — the entry point; lists the contracts below |
+| `agents/issue-tracker.md` | `agents/index.md` — the noun/verb contract: spec → task dir, ticket → child task + `blocked_by`, triage role → task meta, wayfinder map → parent `map.md` |
+| `agents/triage-labels.md` | `agents/index.md` — the five-role vocabulary and its `meta.triage` mapping |
+| `agents/domain.md` | `agents/index.md` — single-context domain doc conventions |
+| `agents/frontend-craft.md` | `agents/index.md` — impeccable binding (PRODUCT/DESIGN → `.trellis/spec/`) + the mechanical `## Design review` gate |
+| `guides/mp-integration.md` | `guides/index.md` (project-owned; the bridge appends the pointer) — phase map, lane rules, skill precedence |
 
-Files carry `paths:` frontmatter for Trellis dynamic spec loading; without that feature they behave as normal pull-mode specs.
+Delivery is index-driven: the session-start hook injects each package's
+`index.md`; agents read the contracts the index lists. No per-file path globs
+are parsed — the specs are pull-mode docs.
 
 ## Requires
 

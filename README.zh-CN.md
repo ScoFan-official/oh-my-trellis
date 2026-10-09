@@ -55,9 +55,10 @@ advisory 技能运不出设计系统——合约可以。oh-my-trellis 把
 
 技能说 "publish to the issue tracker"，指向 `.trellis/tasks/`；
 说 "更新 PRODUCT.md / DESIGN.md"，指向 `.trellis/spec/`。
-`paths:` frontmatter 按路径作用域注入——每份合约恰好在 agent 触碰它管的文件时加载。
-前端闸门同理：碰 `*.tsx` 就收到 `frontend-craft.md`；
-`implement.md` 没有 `## Design review` 小节，不算 READY。
+交付是清单驱动的：Trellis session-start 钩子注入各 spec 包的 `index.md`，
+agent 顺清单读合约（先读 `agents/index.md`）——没有按文件路径的自动注入。
+前端闸门是机械的：前端票的 `implement.md` 缺 `## Design review` 小节，
+CLI 在 archive 时直接拒绝。
 
 ```bash
 trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append
@@ -69,16 +70,17 @@ trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template 
 .trellis/spec/
 ├── agents/
 │   ├── index.md
-│   ├── issue-tracker.md      # 核心合约——agent 触碰 .trellis/tasks/ 或 .scratch/ 时自动注入
-│   ├── triage-labels.md      # 五角色 → meta.triage / Status: 行——inbox/任务操作时注入
-│   ├── frontend-craft.md     # impeccable 绑定 + Design review 闸门——触碰前端文件时注入
-│   └── domain.md             # GLOSSARY.md + docs/adr/ 约定——编辑 domain 文档时注入
+│   ├── issue-tracker.md      # 核心合约——向 tracker 发布任何东西前先读
+│   ├── triage-labels.md      # 五角色 → meta.triage / Status: 行
+│   ├── frontend-craft.md     # impeccable 绑定 + 机械 Design review 闸门
+│   └── domain.md             # GLOSSARY.md + docs/adr/ 约定
 └── guides/
-    └── mp-integration.md     # 阶段映射、泳道规则、技能优先级（拉取式文档）
+    └── mp-integration.md     # 阶段映射、泳道规则、技能优先级（拉取式文档；guides/index.md 归项目所有）
 ```
 
-所有文件带 `paths:` frontmatter，Trellis dynamic spec loading 在 agent
-触碰对应文件时自动注入该合约。`--append` 只补缺省文件，对已有 spec 树安全。
+每个 spec 包带 `index.md`；session-start 钩子注入这些清单，
+agent 顺清单读合约——合约本身是拉取式文档，没有解析按文件路径的 glob。
+`--append` 只补缺省文件，对已有 spec 树安全。
 安装后文件归项目所有（Trellis 项目所有权模型），可自行修改。
 
 ## 02 · 技能集 —— skills CLI

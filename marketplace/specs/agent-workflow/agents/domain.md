@@ -1,11 +1,6 @@
 ---
 name: agent-domain-docs
 description: "Domain vocabulary conventions: single-context GLOSSARY.md + GLOSSARY-MAP.md + docs/adr/, created lazily by the domain-modeling skill. Consulted when writing specs, ADRs or glossary entries."
-paths:
-  - "GLOSSARY.md"
-  - "GLOSSARY-MAP.md"
-  - "docs/adr/"
-  - ".trellis/spec/"
 ---
 
 # Domain docs layout

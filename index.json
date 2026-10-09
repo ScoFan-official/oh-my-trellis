@@ -5,7 +5,7 @@
       "id": "agent-workflow",
       "type": "spec",
       "name": "Agent Workflow (mattpocock × Trellis)",
-      "description": "Issue-tracker contract, triage roles, domain-docs conventions and the frontend-craft contract (impeccable binding + design-review gate) that let mattpocock/skills and impeccable treat .trellis/ as their state. Includes a phase-map guide and path-scoped spec injection.",
+      "description": "Issue-tracker contract, triage roles, domain-docs conventions and the frontend-craft contract (impeccable binding + design-review gate) that let mattpocock/skills and impeccable treat .trellis/ as their state. Includes a phase-map guide; spec delivery is index-driven (the session-start hook injects the packages' index.md files).",
       "path": "marketplace/specs/agent-workflow",
       "tags": ["skills", "mattpocock", "impeccable", "frontend", "issue-tracker", "triage", "agents", "specs"]
     }

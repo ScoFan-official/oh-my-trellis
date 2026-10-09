@@ -8,6 +8,36 @@ skills/assets/templates added, **patch** = fixes to existing content.
 `VERSION` at the repo root is the source of truth; each release is tagged
 `vX.Y.Z`.
 
+## Unreleased
+
+Slice-5 contract alignment: the agent-workflow template now describes the
+delivery mechanism that actually exists (index-driven spec injection), and the
+tracker/frontend contracts match the fork CLI's mechanical gates.
+
+- Both READMEs + registry descriptions: the "dynamic spec loading" /
+  "path-scoped spec injection" claim is replaced with what the session-start
+  hook really does — inject each package's `index.md`; the agent reads the
+  contracts those indexes list. Specs are pull-mode docs.
+- `marketplace/specs/agent-workflow/guides/index.md` removed — the shipped
+  stub could overwrite a project-owned guides index. The bridge skill now
+  ensures the project's own `guides/index.md` carries the `mp-integration.md`
+  pointer (append or create-iff-missing; never rewrite).
+- `agents/issue-tracker.md`: frontier is the `task.py frontier` command; the
+  blocking edge is the formal `task.json` `blocked_by` field written via
+  `set-meta` (the legacy `--meta blocked_by=` create path still reads for
+  compatibility); wayfinding Blocking/Frontier bullets aligned.
+- `agents/frontend-craft.md`: `paths:` frontmatter removed; frontend-ness is
+  `meta.frontend` (explicit override) else best-effort branch-diff detection;
+  the design-review gate is mechanical (`archive` refuses) per fork CLAI-7.
+- `agents/{triage-labels,domain}.md`: dead `paths:` frontmatter removed.
+- `skills/mp-trellis-bridge/templates/`: all five copies resynced with the
+  agent contracts; install step now also wires the guides-index pointer.
+- `skills/implement-spec/`: points at `task.py frontier` as the mechanical
+  frontier on Trellis repos.
+- `guides/mp-integration.md`: phase map reflects the frontier step, the
+  formal `blocked_by` field, index-driven delivery and the archive-refusal
+  design gate.
+
 ## 1.2.0 — 2026-10-07
 
 - `skills/trellis-domains/` — thin-shell operator skill for the

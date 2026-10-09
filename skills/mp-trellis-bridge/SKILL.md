@@ -5,7 +5,7 @@ description: "Bridge contract between mattpocock engineering skills and a Trelli
 
 # mattpocock × Trellis bridge
 
-In a Trellis-managed repo, **"the issue tracker" IS the Trellis task system**. The contract lives at `.trellis/spec/agents/issue-tracker.md` (spec → task dir + `prd.md`/`design.md`/`implement.md`; ticket → child task + `blocked_by` meta; triage role → `task.json` meta key; wayfinder map → parent task + `map.md`). Read it before publishing anything a mattpocock skill produces. `.scratch/` is only the triage inbox and scratch space — planned work never lives there.
+In a Trellis-managed repo, **"the issue tracker" IS the Trellis task system**. The contract lives at `.trellis/spec/agents/issue-tracker.md` (spec → task dir + `prd.md`/`design.md`/`implement.md`; ticket → child task + `blocked_by` refs; triage role → `task.json` meta key; wayfinder map → parent task + `map.md`). Read it before publishing anything a mattpocock skill produces. `.scratch/` is only the triage inbox and scratch space — planned work never lives there.
 
 ## First-run setup (bootstrap)
 
@@ -13,8 +13,9 @@ If `.trellis/spec/agents/issue-tracker.md` is missing, run setup once before usi
 
 1. **Verify Trellis**: `.trellis/scripts/task.py` must exist. If not, stop and tell the user — this bridge only works in Trellis-managed repos.
 2. **Install the spec contracts** — two ways, pick the first that works:
-   - Preferred: `trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append` (installs `agents/` + `guides/` specs, including `paths:` frontmatter for dynamic spec loading). `--append` adds missing files only — safe on existing `.trellis/spec/` trees.
+   - Preferred: `trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append` (installs the `agents/` + `guides/` spec contracts; the session-start hook injects the packages' `index.md` files, and the agent reads the contracts from those indexes). `--append` adds missing files only — safe on existing `.trellis/spec/` trees.
    - Fallback: copy `templates/issue-tracker.md`, `templates/triage-labels.md`, `templates/domain.md`, `templates/frontend-craft.md`, `templates/index.md` from this skill's directory into `.trellis/spec/agents/` (create the directory; skip files that already exist and report each skip).
+   - Then make the guides index point at the guide: if `.trellis/spec/guides/mp-integration.md` exists, ensure `.trellis/spec/guides/index.md` carries a `- \`mp-integration.md\`` pointer — append the line when the file exists without it, create it with a `# Guides` heading when it doesn't. Never rewrite an existing index: the guides index is project-owned.
 3. **Register the block**: append an `## Agent skills` section to `AGENTS.md` — strictly outside any `TRELLIS:START`/`TRELLIS:END` markers. Skip if the section already exists; create `AGENTS.md` with just that section if the file is missing. Use the block template below.
 4. **Check the skill set**: look for mattpocock skills (`grill-with-docs`, `to-spec`) and `impeccable` in this agent's skills directory. If the mp skills are absent, tell the user to run `npx skills add mattpocock/skills --agent <their-platform> --copy`; if `impeccable` is absent, `python <pack>/scripts/install.py --platform <platform> --target . --component imp:impeccable` — the bridge is a contract layer, not the skills.
 5. **Optional hooks**: automation examples live in this skill's own `hooks/` directory. They wire into `.trellis/config.yaml`'s `hooks:` section or per-task `task.json` hooks. Do not edit `config.yaml` unprompted.
@@ -29,7 +30,7 @@ Report what was created/skipped, then continue with whatever invoked this skill.
 
 ### Issue tracker
 
-The tracker IS the Trellis task system: specs/tickets land in `.trellis/tasks/` (spec → task dir + `prd.md`; ticket → child task + `blocked_by` meta). `.scratch/inbox/` holds raw inbound items awaiting triage. See `.trellis/spec/agents/issue-tracker.md`.
+The tracker IS the Trellis task system: specs/tickets land in `.trellis/tasks/` (spec → task dir + `prd.md`; ticket → child task + `blocked_by` refs). `.scratch/inbox/` holds raw inbound items awaiting triage. See `.trellis/spec/agents/issue-tracker.md`.
 
 ### Triage labels
 

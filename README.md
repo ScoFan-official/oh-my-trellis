@@ -55,10 +55,11 @@ For non-Trellis repos, skip to skills only:
 
 Skills that say *"publish to the issue tracker"* get pointed at `.trellis/tasks/`.
 Skills that say *"update PRODUCT.md / DESIGN.md"* get pointed at `.trellis/spec/`.
-Path-scoped `paths:` frontmatter means each contract loads exactly when the
-agent touches the files it governs — the frontend gate included: touch a `*.tsx`
-and `frontend-craft.md` arrives; no `## Design review` section in
-`implement.md` means no READY.
+Delivery is index-driven: Trellis's session-start hook injects the spec
+packages' `index.md` files, and the agent reads each contract the index lists —
+`agents/index.md` first. The frontend gate is mechanical: the CLI refuses to
+archive a frontend task whose `implement.md` carries no `## Design review`
+section.
 
 ```bash
 trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append
@@ -70,16 +71,17 @@ Installs into `.trellis/spec/`:
 .trellis/spec/
 ├── agents/
 │   ├── index.md
-│   ├── issue-tracker.md      # THE contract — injected when agent touches .trellis/tasks/ or .scratch/
-│   ├── triage-labels.md      # five roles → meta.triage / Status: lines — injected on inbox/task work
-│   ├── frontend-craft.md     # impeccable binding + design-review gate — injected on frontend files
-│   └── domain.md             # GLOSSARY.md + docs/adr/ conventions — injected on domain-doc edits
+│   ├── issue-tracker.md      # THE contract — read before publishing to the tracker
+│   ├── triage-labels.md      # five roles → meta.triage / Status: lines
+│   ├── frontend-craft.md     # impeccable binding + the mechanical design-review gate
+│   └── domain.md             # GLOSSARY.md + docs/adr/ conventions
 └── guides/
-    └── mp-integration.md     # phase map, lane rules, skill precedence (pull-mode doc)
+    └── mp-integration.md     # phase map, lane rules, skill precedence (pull-mode doc; guides/index.md stays yours)
 ```
 
-All files carry `paths:` frontmatter, so Trellis dynamic spec loading injects
-each contract exactly when the agent touches the files it governs.
+Each package ships an `index.md`; the session-start hook injects those indexes,
+and the agent reads the contracts they list. The contracts themselves are
+pull-mode docs — nothing parses per-file path globs.
 `--append` adds missing files only — safe on existing spec trees.
 After install, the files are yours to edit (Trellis's project-ownership model).
 

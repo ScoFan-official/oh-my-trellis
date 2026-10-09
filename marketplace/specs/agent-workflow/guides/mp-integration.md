@@ -9,24 +9,25 @@ Trellis owns the pipeline; mattpocock skills supply the techniques inside each p
   ├ open question  → /handoff → /prototype → /handoff back                    │
   └ can't answer   → /to-questionnaire                                        │
 /to-spec      → Trellis task + prd/design/implement.md                        │ record
-/to-tickets   → child tasks + blocked_by meta (tracer-bullet slices)          │
-task.py validate → task.py start                                            │
+/to-tickets   → child tasks + blocked_by field (tracer-bullet slices)         │
+task.py validate → task.py frontier → task.py start                           │
 /implement    → /tdd inside; trellis-before-dev reads specs                   │
   stuck on a bug → /diagnosing-bugs; looping → trellis-break-loop             │ do
 trellis-check → mp /code-review (complementary, both run)                     │
 trellis-update-spec + /domain-modeling + /retro                               │ distill
-task.py archive                                                             │
+task.py archive                                                               │
 ```
 
 Frontend tasks get a second lane, owned by the `impeccable` skill and bound by
-`agents/frontend-craft.md` (auto-injected on frontend file paths):
+`agents/frontend-craft.md` (delivered via the agents index; its design-review
+gate is mechanical at `archive`):
 
 ```
 no spec/product.md → init bootstrap (product truth → .trellis/spec/)          │ think
 prd done → /impeccable shape  → task design.md = surface brief                │ record
 /implement → craft loop; read craft-floor.md before ANY UI edit               │ do
 trellis-check → /impeccable audit + critique                                  │
-verification: implement.md must carry ## Design review, else not READY        │
+verification: implement.md needs ## Design review — archive refuses           │
 finish → /impeccable polish → archive                                         │ distill
 ```
 

@@ -1,6 +1,6 @@
 ---
 name: trellis-run
-description: "Operator shell for `trellis run`, the unattended frontier loop runner — decides when a batch of tickets should be handed to the runner instead of worked interactively, what the tier and whitelist must already allow, where the run ledger lives, and what a stop line means for the board. Load before running `trellis run`, when a run halts (cycle / fail threshold / push refused / deferred delivery), or when asked what the runner will and will not do on its own. Requires .trellis/."
+description: "Operator shell for `trellis run`, the unattended frontier loop runner — decides when a batch of tickets should be handed to the runner instead of worked interactively, what the tier and whitelist must already allow, where the run ledger lives, and what a stop line means for the board. Load before running `trellis run`, when a run halts (cycle / fail threshold / push refused / always-stop / deferred delivery), or when asked what the runner will and will not do on its own. Requires .trellis/."
 ---
 
 # trellis-run — loop runner operator shell
@@ -58,11 +58,25 @@ trellis run --until-empty --board <slug> --provider <claude|codex> \
       consecutive failures on the same ticket.
 - [ ] Each ticket gets its own worktree under `.trellis/.runtime/worktrees/` and
       exactly one headless worker. All ticket state changes (claim, verify,
-      archive) land as commits **on the ticket branch**; the repo you launch from
-      is never written to — that is what keeps a bad run one `git revert` away.
+      archive) land as commits **on the ticket branch**, so the repo you launch
+      from stays clean on the delivery path — with one deliberate exception: when
+      a ticket hits the fail threshold, the runner marks `triage=ready-for-human`
+      on the launching repo's copy, because that is the board a human reads next
+      and the worktree carrying the ticket is already gone. Nothing else is
+      written there. That is what keeps a bad run one `git revert` away.
 - [ ] The commit is the worker's job; if its sandbox cannot write `.git`, the
       runner commits what the worker left, staging by explicit path and excluding
       task bookkeeping so the work commit stays revertable.
+- [ ] Always-stop is checked twice against one authority: before the runner stages
+      anything, and again against what the branch actually carries (`base..HEAD`),
+      so a worker that committed `.env` or a board file itself is caught too. The
+      rule list is `task.py check-commit` (Python), not a copy inside the runner —
+      an agent committing by hand can ask the same verb and get the same answer.
+- [ ] The worker runs under two clocks: the wall clock (`--timeout`) bounds a long
+      ticket, and the idle clock (`channel.worker_guard.idle_timeout`, default
+      5 minutes) gives up on a worker that emits no events at all. A busy worker is
+      never judged idle. `max_live_workers` does not apply: the loop works one
+      ticket at a time.
 - [ ] The run ledger is `.trellis/.runtime/runs/run-<UTC>.jsonl` (gitignored).
       One line per action: ticket, worker, commit OID, verify command + exit,
       stop reason. It is a runtime trace, **never** a reconciliation source —
@@ -76,8 +90,12 @@ trellis run --until-empty --board <slug> --provider <claude|codex> \
 - [ ] `fail_threshold` → that ticket is now `triage=ready-for-human` on the
       board's copy: read its ledger lines, decide, and leave it to a human. Do
       not re-arm it by hand until the cause is gone.
-- [ ] `push_refused` → the ticket's branch is protected or unlisted. That is a
-      config/human decision; the line stops for a reason.
+- [ ] `push_refused` → the tier forbids it, the ref is protected, the whitelist
+      never named it, or the gate's answer could not be read (unreadable and
+      malformed config are refusals too — nobody is watching for a warning).
+- [ ] `always_stop` → a board file or credential-shaped path landed in a commit on
+      the ticket branch. The line halts before verify, push or PR; read the ledger
+      line for the path, decide by hand. Do not teach the worker to ignore it.
 - [ ] `delivery_deferred` → work is verified and sitting unarchived on its
       branch. Either configure the tier/whitelist or deliver it by hand; the
       runner will not archive past a push it may not do.

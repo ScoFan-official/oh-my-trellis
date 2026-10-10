@@ -29,13 +29,16 @@ trellis run --until-empty --board <slug> --provider <claude|codex>
   → worktree → worker → run-verify → delivery-gate → push branch → ready PR → archive
   stop lines: cycle · 3 consecutive failures (ticket → triage=ready-for-human)
               · protected or unlisted ref → refused, the whole line halts
+              · always-stop path in the branch → halts before verify/push/PR
               · tier refuses push → deferred: verified work stays on its branch
 ```
 
-Two properties to keep in mind: the loop never writes to the repo it is launched
-from (ticket state changes are commits on the ticket branch, so a bad run is one
-`git revert` away), and **PR ≠ 交付** — a board row closes only when a human
-merges. `.trellis/.runtime/runs/*.jsonl` is the run ledger: one line per action
+Two properties to keep in mind: ticket state changes are commits **on the ticket
+branch**, so a bad run is one `git revert` away, and the launching repo is written
+by exactly one thing — a ticket that hits the fail threshold gets
+`triage=ready-for-human` there, because its worktree is already gone and that copy
+is the board a human reads next. **PR ≠ 交付** — a board row closes only when a
+human merges. `.trellis/.runtime/runs/*.jsonl` is the run ledger: one line per action
 for the worklog's 验证 field, never a reconciliation source. The `trellis-run`
 skill carries the operator checklist.
 

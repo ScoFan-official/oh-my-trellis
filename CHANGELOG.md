@@ -10,6 +10,26 @@ skills/assets/templates added, **patch** = fixes to existing content.
 
 ## Unreleased
 
+Review follow-up (10-10): the delivery text corrected to match the mechanism the
+`/code-review` axis found, plus the runner's two new behaviors documented.
+
+- `skills/trellis-run/SKILL.md`: the claim "the repo you launch from is never
+  written to" was **false** — a ticket that hits the fail threshold is marked
+  `triage=ready-for-human` on the launching copy (its worktree is already gone,
+  and that copy is the board a human reads next). Rewritten with the exception
+  named instead of an absolute denied by the next bullet in the same file.
+- Same file: new stop condition `always_stop` (a board file or credential-shaped
+  path landed in a commit on the ticket branch — the line halts before verify,
+  push and PR); the commit-path check now runs twice against one authority
+  (`task.py check-commit`, CLAI-10) so an agent committing by hand gets the same
+  answer; the worker's second clock (`channel.worker_guard.idle_timeout`, default
+  5 min, re-armed by every event) and why `max_live_workers` does not apply.
+- `guides/mp-integration.md`: same zero-write claim narrowed, `always-stop`
+  added to the stop-line list.
+- Fork-side prerequisites for this text (not pack content): bounded tree-kill in
+  `run-verify`, the idle clock, and CLAI-10 `task.py check-commit` — pack `main`
+  describes them; `cli-v0.6.18-ohmy.2` will ship them.
+
 Slice-7 contract sync: the runner era (`trellis run`, CLAI-8) gets an operator
 shell skill, and the delivery text now describes tiers that exist.
 

@@ -60,8 +60,11 @@ an uncommitted flag, progress tick or log entry does not exist
       `.trellis/domains/<slug>/README.md` (`head -1`).
 - [ ] No flag (or a stale flag resolved per the next checklist) → plant yours
       in the format defined by §2 (also spelled out in the
-      `_scaffold/README.md` comment); **committing is what makes it real** —
-      only then start writing.
+      `_scaffold/README.md` comment), and land it as the segment's **first**
+      commit — `git log --oneline <flag-commit>..HEAD` should then list only
+      work that already carried a flag. 插旗先行 is about the window other
+      writers were exposed to: a flag written after the fact protects nothing,
+      so no later step can repair the order.
 - [ ] Flag scope = write rights to `domains/<slug>/` plus the product code of
       tasks hung on it. Reads are always free — no flag needed.
 - [ ] Multi-board task → one flag per affected board; domain-less work plants

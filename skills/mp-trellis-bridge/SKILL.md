@@ -1,6 +1,6 @@
 ---
 name: mp-trellis-bridge
-description: "Bridge contract between mattpocock engineering skills and a Trellis-managed repo. Load before running /to-spec, /to-tickets, /triage, /wayfinder, /implement, or whenever a mattpocock skill mentions 'the issue tracker', tickets, labels, or triage roles. Requires .trellis/."
+description: "Bridge contract between mattpocock engineering skills and a Trellis-managed repo. Load before running /to-spec, /to-tickets, /triage, /wayfinder, /implement, whenever a mattpocock skill mentions 'the issue tracker', tickets, labels, or triage roles, or when the user asks for an unattended run (无人值守 / 放手跑 / hands-off 跑). Requires .trellis/."
 ---
 
 # mattpocock × Trellis bridge
@@ -50,6 +50,19 @@ The `impeccable` skill is the design toolchain; its PRODUCT.md/DESIGN.md live at
 - **Active Trellis task** → the Trellis pipeline owns the phase; mp skills run inside steps (grilling inside `trellis-brainstorm`, `tdd` inside implementation, mp `code-review` after `trellis-check`). Do not let an mp skill create new tasks mid-flight without telling the user.
 - **No active task, quick work** → standalone mp lane: grill → implement → code-review, no Trellis task needed. If the work grows past one session, promote it: `/to-spec` → `/to-tickets`, which land in `.trellis/tasks/`.
 - **Promotion boundary**: `.scratch/inbox/` items become real tasks only when triage lands `ready-for-agent`.
+
+## Unattended-run handoff (dispatch-roster)
+
+When a planning lane lands artifacts destined for agent execution, close with one question — **「要无人值守跑吗？」**:
+
+- `wayfinder` — after the board map (parent task + `map.md`) is written and the child tickets exist.
+- `grill-with-docs` — after the converged spec/PRD sits in a task that is ready for implementation.
+- `to-tickets` — after the split lands child tasks with `blocked_by` refs.
+- `trellis-brainstorm` — after the user approves the final planning summary (the same rule lives in that skill's close-out).
+
+Yes → load `dispatch-roster` (probe → four decisions → summary → roster on disk). No or anything else → continue the normal interactive lane. `dispatch-roster` ends at roster-on-disk; `trellis-run` owns the launch. Do not ask when nothing produced agent-bound tickets — standalone quick-lane work is not roster material.
+
+Keywords — 「无人值守」「放手跑」「hands-off 跑」/ unattended — load `dispatch-roster` directly at any point, no gate. A verbal request outranks lane position: asking again is wrong when the user already said it.
 
 ## Skill precedence on name collisions
 

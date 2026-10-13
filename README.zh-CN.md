@@ -25,7 +25,7 @@ advisory 技能运不出设计系统——合约可以。oh-my-trellis 把
 再把它们嘴里的抽象名词——"the issue tracker"、"PRODUCT.md"、"DESIGN.md"——
 绑进 Trellis 的 `.trellis/` 主轴，把工作流从"建议执行"变成"强制执行"。
 
-**3** 个 vendored 上游 · **1,741** 个目录资产 · **41** 个默认技能 · **22** 个平台 · **1** 层合约——对 vendored 文件零 patch。
+**3** 个 vendored 上游 · **1,741** 个目录资产 · **43** 个默认技能 · **22** 个平台 · **1** 层合约——对 vendored 文件零 patch。
 
 ---
 
@@ -34,7 +34,7 @@ advisory 技能运不出设计系统——合约可以。oh-my-trellis 把
 | 你想要… | 运行 |
 | --- | --- |
 | 只要 Trellis 合约规范 | `trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append` |
-| 推荐技能集（mp 全量 37 个 + impeccable + 本包自建 `mp-trellis-bridge` / `oh-my-update` / `trellis-domains` / `trellis-run`） | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
+| 推荐技能集（mp 全量 37 个 + impeccable + 本包自建 `mp-trellis-bridge` / `oh-my-update` / `trellis-domains` / `trellis-run` / `dispatch-roster`） | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
 | 1741 资产目录库里的任何东西 | `python scripts/install.py --platform <platform> --target <repo>` |
 
 仓库已公开，三条通道均无需认证，可自由组合。
@@ -43,7 +43,7 @@ advisory 技能运不出设计系统——合约可以。oh-my-trellis 把
 
 把下面这段贴给 Devin / Codex / ZCode / Claude / Cursor，它会自己完成全部初始化：
 
-> 在本仓库安装 Trellis 和 oh-my-trellis：① 装我们的 Trellis CLI 并初始化——`npm i -g https://github.com/ScoFan-official/oh-my-trellis/releases/download/cli-v0.6.17-ohmy.2/oh-my-trellis-0.6.17-ohmy.2.tgz`（若已全局安装 `@mindfoldhq/trellis` 需先 `npm rm -g @mindfoldhq/trellis`——本包占用 `trellis` bin），然后 `trellis init --devin`——registry 与默认 workflow 已内嵌在 fork 里；② 跑 `trellis init --template agent-workflow --append` 安装 spec 合约；③ 给你的平台装技能——优先 `npx skills add ScoFan-official/oh-my-trellis --agent <你的平台> --copy`；若你的平台不被覆盖，改用 `git clone --depth 1 https://github.com/ScoFan-official/oh-my-trellis /tmp/mtp && python /tmp/mtp/scripts/install.py --platform <你的平台> --target . --only-core`；④ 调用 `mp-trellis-bridge` 技能完成 `AGENTS.md` 播种，然后读 `.trellis/spec/agents/issue-tracker.md`，向我汇报你对 spec、ticket、triage、实现分别会用哪些 tracker 动词。之后要更新，调用 `oh-my-update` 技能。
+> 在本仓库安装 Trellis 和 oh-my-trellis：① 装我们的 Trellis CLI 并初始化——`npm i -g https://github.com/ScoFan-official/oh-my-trellis/releases/download/cli-v0.6.18-ohmy.5/oh-my-trellis-0.6.18-ohmy.5.tgz`（若已全局安装 `@mindfoldhq/trellis` 需先 `npm rm -g @mindfoldhq/trellis`——本包占用 `trellis` bin），然后 `trellis init --devin`——registry 与默认 workflow 已内嵌在 fork 里；② 跑 `trellis init --template agent-workflow --append` 安装 spec 合约；③ 给你的平台装技能——优先 `npx skills add ScoFan-official/oh-my-trellis --agent <你的平台> --copy`；若你的平台不被覆盖，改用 `git clone --depth 1 https://github.com/ScoFan-official/oh-my-trellis /tmp/mtp && python /tmp/mtp/scripts/install.py --platform <你的平台> --target . --only-core`；④ 调用 `mp-trellis-bridge` 技能完成 `AGENTS.md` 播种，然后读 `.trellis/spec/agents/issue-tracker.md`，向我汇报你对 spec、ticket、triage、实现分别会用哪些 tracker 动词。之后要更新，调用 `oh-my-update` 技能。
 
 非 Trellis 仓库、只要技能时用这个短版：
 
@@ -73,13 +73,16 @@ trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template 
 │   ├── issue-tracker.md      # 核心合约——向 tracker 发布任何东西前先读
 │   ├── triage-labels.md      # 五角色 → meta.triage / Status: 行
 │   ├── frontend-craft.md     # impeccable 绑定 + 机械 Design review 闸门
-│   └── domain.md             # GLOSSARY.md + docs/adr/ 约定
+│   ├── domain.md             # GLOSSARY.md + docs/adr/ 约定
+│   └── voice.md              # 双语技术语音规范（STC + STE 契约）
 └── guides/
     └── mp-integration.md     # 阶段映射、泳道规则、技能优先级（拉取式文档；guides/index.md 归项目所有）
 ```
 
 每个 spec 包带 `index.md`；session-start 钩子注入这些清单，
 agent 顺清单读合约——合约本身是拉取式文档，没有解析按文件路径的 glob。
+`voice.md` 确立了沟通与文档撰写的双语语调规范（中文遵循简化技术中文 STC，
+英文遵循简化技术英文 STE）；本包所有自建技能与模板均以此改造对齐。
 `--append` 只补缺省文件，对已有 spec 树安全。
 安装后文件归项目所有（Trellis 项目所有权模型），可自行修改。
 
@@ -89,14 +92,15 @@ agent 顺清单读合约——合约本身是拉取式文档，没有解析按�
 npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy
 ```
 
-安装 **42 个技能**——mattpocock 全集
+安装 **43 个技能**——mattpocock 全集
 （engineering / productivity / misc / in-progress）+ `impeccable` 前端设计工作流
-+ 本包自建 `mp-trellis-bridge`、`oh-my-update`、`trellis-domains`、`trellis-run`。
++ 本包五大自建技能：`mp-trellis-bridge`、`oh-my-update`、`trellis-domains`、`trellis-run` 与 `dispatch-roster`。
 `--agent` 支持 `devin`、`codex`、`claude`、`cursor` 等 skills CLI 识别的平台。
 
 `mp-trellis-bridge` 是自举器 + 路由合约：首次加载时验证 `.trellis/`、
 安装通道 1 的 spec 合约（registry 优先、内置模板兜底）、向 `AGENTS.md`
-幂等追加 `## Agent skills` 块、检查 mp 技能是否就位。之后是 no-op。
+幂等追加 `## Agent skills` 块、检查 mp 技能是否就位，并在规划技能收尾时将
+无人值守运行引导给 `dispatch-roster`。之后是 no-op。
 
 ## 03 · 目录库 —— install.py
 
@@ -226,10 +230,11 @@ commands/MCP 路径为约定推断。
 | `setup-matt-pocock-skills` | 面向非 Trellis 仓库的旧自举器——本包中由 `mp-trellis-bridge` 取代。 |
 | `claude-handoff`、`loop-me`、`setup-ts-deep-modules`、`writing-beats`、`writing-fragments`、`writing-shape` | in-progress 合集——可用但打磨度低。 |
 | `git-guardrails-claude-code`、`migrate-to-shoehorn`、`scaffold-exercises`、`setup-pre-commit` | misc——平台特定或小众。 |
-| `mp-trellis-bridge` | **本包自建**。把以上全部绑定到 Trellis 的合约 + 路由器。 |
-| `oh-my-update` | **本包自建**。确认门后的整栈更新——fork CLI、`.trellis/` 模板、已装技能、`.trellis/spec/` 合约——升到 ScoFan-official 最新 release。 |
-| `trellis-domains` | **本包自建**。`.trellis/domains/` 板块层的薄壳——归口、插旗、接手读档链、worklog/收工、对账检查清单，逐条指回仓内 `DISCIPLINE.md` / `WORKLOG-PROTOCOL.md` / `REGISTRY.md`（协议正文不住这里）。 |
-| `trellis-run` | **本包自建**。`trellis run`（frontier 无人值守循环）的薄壳——什么时候该交给循环、档位与 `delivery.auto_push_refs` 要先允许什么、run ledger 在哪（以及它为何不是对账源）、每种停线原因在等你做什么。 |
+| `mp-trellis-bridge` | **本包自建**。把以上全部绑定到 Trellis 的合约 + 路由器：首次加载验证 `.trellis/`、写入 `AGENTS.md` 块、检查 mp 技能是否就位，并在规划技能收尾时将无人值守运行引导给 `dispatch-roster`。 |
+| `oh-my-update` | **本包自建**。确认门后的整栈更新——fork CLI、`.trellis/` 模板、已装技能、`.trellis/spec/` 合约——升到 ScoFan-official 最新 release（过滤 `cli-v*` tag）。 |
+| `trellis-domains` | **本包自建**。`.trellis/domains/` 板块层的薄壳——归口、插旗顺序判据、接手读档链、worklog/收工、对账检查清单，逐条指回仓内 `DISCIPLINE.md` / `WORKLOG-PROTOCOL.md` / `REGISTRY.md`（协议正文不住这里）。 |
+| `trellis-run` | **本包自建**。`trellis run`（frontier 无人值守循环）的薄壳——什么时候该交给循环、档位与 `delivery.auto_push_refs` 要先允许什么、run ledger 在哪（以及它为何不是对账源）、五种停线原因、`always_stop` 闸门，以及与 `dispatch-roster` 的 orchestrator 模式协同边界。 |
+| `dispatch-roster` | **本包自建**。为无人值守执行装配派工表（roster）：通过轻量握手与凭据检测（3 种状态）探测 ACP 目标（grok-build / codex / claude），敲定 4 项决策（orchestrator、角色默认目标、逐票覆盖、max_parallel），落盘至卡片 frontmatter、ticket meta 与 config.yaml，并移交 `trellis-run` 开跑。 |
 
 ### impeccable —— 1 个技能，24 条命令（前端设计）
 
@@ -265,8 +270,8 @@ PRODUCT.md → `.trellis/spec/product.md`、DESIGN.md → `.trellis/spec/design-
 ## 仓库结构
 
 ```
-marketplace/            # 通道 1：Trellis spec registry（index.json + agent-workflow）
-skills/                 # 通道 2：npx-skills 安装面——本包自建技能 + mp 全量 37 技能 + impeccable
+marketplace/            # 通道 1：Trellis spec registry（index.json + agent-workflow 含 voice.md）
+skills/                 # 通道 2：npx-skills 安装面——5 本包自建技能 + 37 mp 技能 + impeccable
 catalog/
 ├── INDEX.md            # 生成：每个组件 + 使用场景
 ├── manifest.json       # 生成：每个资产 → 各平台目标路径
@@ -274,7 +279,8 @@ catalog/
 ├── ATTRIBUTION.md      # MIT 出处
 ├── mattpocock/         # skills(4 合集) + docs + .claude-plugin + .agents + LICENSE
 ├── impeccable/         # skills/impeccable + docs + LICENSE + NOTICE.md（Apache-2.0）
-└── ecc/                # skills agents commands mcps hooks loops mods settings sandbox + LICENSE
+├── ecc/                # skills agents commands mcps hooks loops mods settings sandbox + LICENSE
+└── voice/              # 双语技术语音审查工具链（voice_lint.py、stc/、ste/）
 scripts/
 ├── platforms.py        # 22 平台位置表（单一真源）
 ├── install.py          # 目录库 → 平台原生文件

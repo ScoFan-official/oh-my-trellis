@@ -25,7 +25,7 @@ Advisory skills don't ship design systems — contracts do. oh-my-trellis vendor
 binds their loose nouns — "the issue tracker", "PRODUCT.md", "DESIGN.md" — to
 Trellis's `.trellis/` spine so the workflow is enforced, not suggested.
 
-**3** vendored upstreams · **1,741** catalog assets · **41** default skills · **22** platforms · **1** contract layer — zero patches to vendored files.
+**3** vendored upstreams · **1,741** catalog assets · **43** default skills · **22** platforms · **1** contract layer — zero patches to vendored files.
 
 ---
 
@@ -34,7 +34,7 @@ Trellis's `.trellis/` spine so the workflow is enforced, not suggested.
 | You want… | Run |
 | --- | --- |
 | The Trellis contract specs only | `trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append` |
-| The recommended skill set (all 37 mp skills + impeccable + the pack's own `mp-trellis-bridge` / `oh-my-update` / `trellis-domains` / `trellis-run`) | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
+| The recommended skill set (all 37 mp skills + impeccable + the pack's own `mp-trellis-bridge` / `oh-my-update` / `trellis-domains` / `trellis-run` / `dispatch-roster`) | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
 | Anything else from the 1,741-asset catalog | `python scripts/install.py --platform <platform> --target <repo>` |
 
 Repo is public — all three channels work without auth. Mix and match freely.
@@ -43,7 +43,7 @@ Repo is public — all three channels work without auth. Mix and match freely.
 
 Hand this to Devin / Codex / ZCode / Claude / Cursor and it will set everything up itself:
 
-> Set up Trellis and oh-my-trellis in this repo: ① install our Trellis CLI and init — `npm i -g https://github.com/ScoFan-official/oh-my-trellis/releases/download/cli-v0.6.17-ohmy.2/oh-my-trellis-0.6.17-ohmy.2.tgz` (if `@mindfoldhq/trellis` is already installed globally, `npm rm -g @mindfoldhq/trellis` first — our package owns the `trellis` bin), then `trellis init --devin` — registry and workflow defaults are baked into the fork; ② run `trellis init --template agent-workflow --append` to install the spec contracts; ③ install the skills for YOUR platform — prefer `npx skills add ScoFan-official/oh-my-trellis --agent <your-platform> --copy`; if your platform isn't covered, run `git clone --depth 1 https://github.com/ScoFan-official/oh-my-trellis /tmp/mtp && python /tmp/mtp/scripts/install.py --platform <your-platform> --target . --only-core` instead; ④ invoke the `mp-trellis-bridge` skill so it finishes seeding `AGENTS.md`, then read `.trellis/spec/agents/issue-tracker.md` and report back which tracker verbs you'll use for specs, tickets, triage and implementation. To update later, invoke the `oh-my-update` skill.
+> Set up Trellis and oh-my-trellis in this repo: ① install our Trellis CLI and init — `npm i -g https://github.com/ScoFan-official/oh-my-trellis/releases/download/cli-v0.6.18-ohmy.5/oh-my-trellis-0.6.18-ohmy.5.tgz` (if `@mindfoldhq/trellis` is already installed globally, `npm rm -g @mindfoldhq/trellis` first — our package owns the `trellis` bin), then `trellis init --devin` — registry and workflow defaults are baked into the fork; ② run `trellis init --template agent-workflow --append` to install the spec contracts; ③ install the skills for YOUR platform — prefer `npx skills add ScoFan-official/oh-my-trellis --agent <your-platform> --copy`; if your platform isn't covered, run `git clone --depth 1 https://github.com/ScoFan-official/oh-my-trellis /tmp/mtp && python /tmp/mtp/scripts/install.py --platform <your-platform> --target . --only-core` instead; ④ invoke the `mp-trellis-bridge` skill so it finishes seeding `AGENTS.md`, then read `.trellis/spec/agents/issue-tracker.md` and report back which tracker verbs you'll use for specs, tickets, triage and implementation. To update later, invoke the `oh-my-update` skill.
 
 For non-Trellis repos, skip to skills only:
 
@@ -74,14 +74,18 @@ Installs into `.trellis/spec/`:
 │   ├── issue-tracker.md      # THE contract — read before publishing to the tracker
 │   ├── triage-labels.md      # five roles → meta.triage / Status: lines
 │   ├── frontend-craft.md     # impeccable binding + the mechanical design-review gate
-│   └── domain.md             # GLOSSARY.md + docs/adr/ conventions
+│   ├── domain.md             # GLOSSARY.md + docs/adr/ conventions
+│   └── voice.md              # bilingual technical voice contract (STC + STE rules)
 └── guides/
     └── mp-integration.md     # phase map, lane rules, skill precedence (pull-mode doc; guides/index.md stays yours)
 ```
 
 Each package ships an `index.md`; the session-start hook injects those indexes,
 and the agent reads the contracts they list. The contracts themselves are
-pull-mode docs — nothing parses per-file path globs.
+pull-mode docs — nothing parses per-file path globs. `voice.md` anchors the
+bilingual tone standard (Simplified Technical Chinese / STC across C1–C10/D1–D8/I1–I8
+and Simplified Technical English / STE per ASD-STE100); all pack-owned skills and
+templates are retrofitted to this standard.
 `--append` adds missing files only — safe on existing spec trees.
 After install, the files are yours to edit (Trellis's project-ownership model).
 
@@ -91,16 +95,18 @@ After install, the files are yours to edit (Trellis's project-ownership model).
 npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy
 ```
 
-Installs **42 skills** — mattpocock's full collection
+Installs **43 skills** — mattpocock's full collection
 (engineering, productivity, misc, in-progress) plus `impeccable`, the frontend
-design workflow, plus the pack's own `mp-trellis-bridge`, `oh-my-update`,
-`trellis-domains` and `trellis-run`. `--agent` accepts `devin`, `codex`,
+design workflow, plus the pack's five first-party skills:
+`mp-trellis-bridge`, `oh-my-update`, `trellis-domains`, `trellis-run`, and
+`dispatch-roster`. `--agent` accepts `devin`, `codex`,
 `claude`, `cursor` and the other platforms the skills CLI knows.
 
 `mp-trellis-bridge` is a bootstrapper + routing contract: on first load it
 verifies `.trellis/`, installs the channel-1 spec contracts (registry first,
 bundled templates as fallback), appends an `## Agent skills` block to
-`AGENTS.md`, and checks the mp skills are present. No-op afterwards.
+`AGENTS.md`, checks the mp skills are present, and gates the close-out question
+toward `dispatch-roster` when planning finishes with tickets. No-op afterwards.
 
 ## 03 · The catalog — install.py
 
@@ -231,10 +237,11 @@ implement → retro*, with two intake ramps and standalone utilities.
 | `setup-matt-pocock-skills` | Legacy bootstrapper for plain (non-Trellis) repos — superseded here by `mp-trellis-bridge`. |
 | `claude-handoff`, `loop-me`, `setup-ts-deep-modules`, `writing-beats`, `writing-fragments`, `writing-shape` | in-progress collection — usable but less polished. |
 | `git-guardrails-claude-code`, `migrate-to-shoehorn`, `scaffold-exercises`, `setup-pre-commit` | misc — platform-specific or niche. |
-| `mp-trellis-bridge` | **Ours.** The contract + router binding all of the above to Trellis. |
-| `oh-my-update` | **Ours.** Gate-checked update of the whole stack — fork CLI, `.trellis/` templates, installed skills, `.trellis/spec/` — to the latest ScoFan-official releases. |
-| `trellis-domains` | **Ours.** Thin shell over the `.trellis/domains/` layer — 归口 routing, board flag, takeover read-chain, worklog/收工 and 对账 checklists that point at the repo's `DISCIPLINE.md` / `WORKLOG-PROTOCOL.md` / `REGISTRY.md` (the protocol text never lives here). |
-| `trellis-run` | **Ours.** Thin shell over `trellis run`, the unattended frontier loop — when the loop is the right tool, what the tier + `delivery.auto_push_refs` must already allow, where the run ledger lives (and why it is never a reconciliation source), and what each stop reason asks of you. |
+| `mp-trellis-bridge` | **Ours.** The contract + router binding all of the above to Trellis. Verifies `.trellis/`, writes `AGENTS.md` block, checks mp skills, and hands off to `dispatch-roster` when planning finishes. |
+| `oh-my-update` | **Ours.** Gate-checked update of the whole stack — fork CLI, `.trellis/` templates, installed skills, `.trellis/spec/` — to the latest ScoFan-official releases (filters `cli-v*` tags). |
+| `trellis-domains` | **Ours.** Thin shell over the `.trellis/domains/` layer — 归口 routing, board flag order criterion, takeover read-chain, worklog/收工 and 对账 checklists that point at the repo's `DISCIPLINE.md` / `WORKLOG-PROTOCOL.md` / `REGISTRY.md` (the protocol text never lives here). |
+| `trellis-run` | **Ours.** Thin shell over `trellis run`, the unattended frontier loop — when the loop is the right tool, what the tier + `delivery.auto_push_refs` must already allow, where the run ledger lives (and why it is never a reconciliation source), five stop reasons, `always_stop` guard, and the orchestrator boundary with `dispatch-roster`. |
+| `dispatch-roster` | **Ours.** Staffs the dispatch roster (派工表) for unattended runs: probes ACP targets (grok-build / codex / claude) via lightweight handshake + credential checks (3 states), settles four decisions (orchestrator, role defaults, ticket overrides, max_parallel), writes to disk, and hands off to `trellis-run`. |
 
 ### impeccable — 1 skill, 24 commands (frontend design)
 
@@ -271,8 +278,8 @@ Every component's when-to-use: [`catalog/INDEX.md`](catalog/INDEX.md).
 ## Repo layout
 
 ```
-marketplace/            # channel 1: Trellis spec registry (index.json + agent-workflow)
-skills/                 # channel 2: npx-skills surface — pack-owned skills + 37 mp skills + impeccable
+marketplace/            # channel 1: Trellis spec registry (index.json + agent-workflow w/ voice.md)
+skills/                 # channel 2: npx-skills surface — 5 pack-owned skills + 37 mp skills + impeccable
 catalog/
 ├── INDEX.md            # generated: every component + when-to-use
 ├── manifest.json       # generated: every asset → per-platform target paths
@@ -280,7 +287,8 @@ catalog/
 ├── ATTRIBUTION.md      # MIT provenance
 ├── mattpocock/         # skills(4 collections) + docs + .claude-plugin + .agents + LICENSE
 ├── impeccable/         # skills/impeccable + docs + LICENSE + NOTICE.md (Apache-2.0)
-└── ecc/                # skills agents commands mcps hooks loops mods settings sandbox + LICENSE
+├── ecc/                # skills agents commands mcps hooks loops mods settings sandbox + LICENSE
+└── voice/              # bilingual voice lint toolchain (voice_lint.py, stc/, ste/)
 scripts/
 ├── platforms.py        # 22-platform location table (single source of truth)
 ├── install.py          # materialize catalog → platform-native files

@@ -8,7 +8,35 @@ skills/assets/templates added, **patch** = fixes to existing content.
 `VERSION` at the repo root is the source of truth; each release is tagged
 `vX.Y.Z`.
 
-## Unreleased
+## 1.3.0 — 2026-10-13
+
+Voice contract, dispatch-roster skill, unattended runner loop shell, and
+bilingual documentation alignment.
+
+- `skills/dispatch-roster/` — **new**. Staffs the dispatch roster (派工表) for
+  an unattended multi-agent run: probes every ACP target in the registry
+  (grok-build / codex / claude) via lightweight handshake + credential checks,
+  asks the four roster decisions (orchestrator, role defaults for
+  implement/check/research, per-ticket overrides, max_parallel), writes to
+  agent cards, ticket meta and `.trellis/config.yaml`, and gates handoff to
+  `trellis-run`. Bundles `probe_roster.py`.
+- `marketplace/specs/agent-workflow/agents/voice.md` — **new**. The bilingual
+  technical voice contract: Simplified Technical Chinese (STC across
+  C1–C10, D1–D8, I1–I8, W1–W9, G1–G22) and Simplified Technical English (STE
+  per ASD-STE100). All first-party skills and spec templates retrofitted to
+  STC/STE standards.
+- `catalog/voice/` — **new**. Bilingual voice lint toolchain: `voice_lint.py`,
+  `stc/` (tools, recommended/avoid term banks, anti-echo test suite), and
+  `ste/scripts/ste-lint.py`.
+- `skills/trellis-run/` — orchestrator mode section added, clarifying the
+  boundary with `dispatch-roster` (dispatch-roster owns who; trellis-run
+  owns how / spawn / monitor / takeover).
+- Skill count updated across the board: 41 → 43 default skills (37 mp + 1
+  impeccable + 5 pack-owned skills: `mp-trellis-bridge`, `oh-my-update`,
+  `trellis-domains`, `trellis-run`, `dispatch-roster`).
+- Both READMEs (`README.md`, `README.zh-CN.md`) fully aligned with current
+  repository state, latest CLI release pointers (`cli-v0.6.18-ohmy.5`),
+  and the 43-skill catalog layout.
 
 Review follow-up (10-10): the delivery text corrected to match the mechanism the
 `/code-review` axis found, plus the runner's two new behaviors documented.

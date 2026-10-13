@@ -15,6 +15,8 @@ Routing: each non-code line is classified CJK (contains a CJK char) or English
 (contains an ASCII letter). CJK lines go to `stc check`, English lines to
 `ste-lint.py`; the other lines are blanked to preserve line:col positions.
 Code fences and YAML frontmatter are masked from both linters.
+Excluded: task archive, workspace, runtime, worklog journals, vendored trees
+(third_party/, mp-trellis-pack/, vendored skill reference dirs).
 """
 
 import json
@@ -36,6 +38,9 @@ EXCLUDE_PATTERNS = (
     ".scratch/",
     "tools/mp-trellis-pack/",
     "node_modules/",
+    "/worklog/",
+    "third_party/",
+    ".devin/skills/impeccable/reference/",
 )
 
 INSTRUCTION_PATH_HINTS = (

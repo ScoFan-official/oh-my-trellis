@@ -12,10 +12,10 @@ The `/triage` skill moves inbound items through a small role machine. Label name
 | Label | Meaning | Next action |
 | --- | --- | --- |
 | `needs-triage` | Raw item, not yet evaluated | Read, verify, assign a real role |
-| `needs-info` | Can't decide yet — missing reproduction, context or answers | Ask the reporter; keep the item in the inbox |
-| `ready-for-agent` | Verified, well-scoped; an agent brief exists | Promote to a Trellis task / hand to `/implement` |
+| `needs-info` | Can't decide yet — missing reproduction, context or answers | Ask the reporter. Keep the item in the inbox |
+| `ready-for-agent` | Verified, well-scoped. An agent brief exists | Promote to a Trellis task / hand to `/implement` |
 | `ready-for-human` | Needs human judgment or privileged access | Assign to a person |
-| `wontfix` | Out of scope per `.out-of-scope/` or repo direction | Record the rationale; close |
+| `wontfix` | Out of scope per `.out-of-scope/` or repo direction | Record the rationale. Close |
 
 Classification is orthogonal: `Category: bug | enhancement`.
 

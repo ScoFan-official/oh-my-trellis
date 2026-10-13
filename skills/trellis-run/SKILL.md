@@ -8,9 +8,9 @@ description: "Operator shell for `trellis run`, the unattended frontier loop run
 Thin shell: it routes to the repo-internal authority texts and carries
 checklist-level judgment only. The gate model of record lives in the consuming
 repo (`.trellis/domains/<board>/02-*.md` or wherever the delivery-tier document
-sits) plus `.trellis/domains/DISCIPLINE.md` §4; the implementation is the
+sits) plus `.trellis/domains/DISCIPLINE.md` §4. The implementation is the
 `oh-my-trellis` CLI (`trellis run`) and `task.py delivery-gate`. If this file and
-those disagree, they win — fix this file.
+those disagree, they win — correct this file.
 
 **The runner's own stop conditions are mechanical, and so is the whitelist:
 neither is negotiable from a prompt.** Nothing here lets a run push a protected
@@ -21,7 +21,7 @@ ref, merge a PR, tag, release, deploy, or run a production migration.
 - [ ] Several tickets in one board that are already specified (prd/design/
       implement written), each with a verification contract and a branch, and
       you are not needed between them → runner. One ticket, or one still being
-      shaped → work it in-session; the runner does not think about scope.
+      shaped → work it in-session. The runner does not think about scope.
 - [ ] The board's flag protocol still applies inside the run: `task.py start`
       refuses on another writer's fresh flag, and that refusal counts as a
       ticket failure. A runner is not a bypass around a claimed board.
@@ -36,11 +36,11 @@ ref, merge a PR, tag, release, deploy, or run a production migration.
       the runner never pushes and every ticket stops as `delivery_deferred`
       (verified work left standing on its branch, unarchived — that is the
       correct outcome, not an error).
-- [ ] Whitelist: `delivery.auto_push_refs` (block-list YAML; an empty or
+- [ ] Whitelist: `delivery.auto_push_refs` (block-list YAML, an empty or
       malformed list means no push). Ask the repo instead of guessing:
       `python ./.trellis/scripts/task.py delivery-gate <ref> --json`.
 - [ ] Per ticket: `set-branch` + `set-base-branch` (no branch metadata = the
-      ticket fails; the runner will not invent a ref) and a non-empty
+      ticket fails, the runner will not invent a ref) and a non-empty
       verification contract (`add-verify`) — without one nothing can be
       delivered unattended, because there is no evidence.
 - [ ] Dry-run first: `trellis run --dry-run` prints the chosen ticket, its
@@ -54,20 +54,20 @@ trellis run --until-empty --board <slug> --provider <claude|codex> \
             [--max-tickets N] [--max-failures N] [--timeout 20m] [--dry-run]
 ```
 
-- [ ] Defaults are the board's: 5 ticket attempts per run, halt after 3
+- [ ] Defaults are the board's: 5 ticket attempts per run, stop after 3
       consecutive failures on the same ticket.
 - [ ] Each ticket gets its own worktree under `.trellis/.runtime/worktrees/` and
       exactly one headless worker. All ticket state changes (claim, verify,
-      archive) land as commits **on the ticket branch**, so the repo you launch
+      archive) land as commits **on the ticket branch**, so the repo you start
       from stays clean on the delivery path — with one deliberate exception: when
       a ticket hits the fail threshold, the runner marks `triage=ready-for-human`
-      on the launching repo's copy, because that is the board a human reads next
+      on the starting repo's copy, because that is the board a human reads next
       and the worktree carrying the ticket is already gone. Nothing else is
       written there. That is what keeps a bad run one `git revert` away.
-- [ ] The commit is the worker's job; if its sandbox cannot write `.git`, the
+- [ ] The commit is the worker's job. If its sandbox cannot write `.git`, the
       runner commits what the worker left, staging by explicit path and excluding
       task bookkeeping so the work commit stays revertable.
-- [ ] Always-stop is checked twice against one authority: before the runner stages
+- [ ] Always-stop is verified twice against one authority: before the runner stages
       anything, and again against what the branch actually carries (`base..HEAD`),
       so a worker that committed `.env` or a board file itself is caught too. The
       rule list is `task.py check-commit` (Python), not a copy inside the runner —
@@ -85,7 +85,7 @@ trellis run --until-empty --board <slug> --provider <claude|codex> \
 
 ## When a run stops
 
-- [ ] `cycle` → nothing was grabbed. Fix the `blocked_by` graph
+- [ ] `cycle` → nothing was grabbed. Correct the `blocked_by` graph
       (`task.py set-meta <dir> blocked_by …`), then re-run.
 - [ ] `fail_threshold` → that ticket is now `triage=ready-for-human` on the
       board's copy: read its ledger lines, decide, and leave it to a human. Do
@@ -94,13 +94,13 @@ trellis run --until-empty --board <slug> --provider <claude|codex> \
       never named it, or the gate's answer could not be read (unreadable and
       malformed config are refusals too — nobody is watching for a warning).
 - [ ] `always_stop` → a board file or credential-shaped path landed in a commit on
-      the ticket branch. The line halts before verify, push or PR; read the ledger
+      the ticket branch. The line stops before verify, push or PR. Read the ledger
       line for the path, decide by hand. Do not teach the worker to ignore it.
 - [ ] `delivery_deferred` → work is verified and sitting unarchived on its
-      branch. Either configure the tier/whitelist or deliver it by hand; the
+      branch. Either configure the tier/whitelist or deliver it by hand. The
       runner will not archive past a push it may not do.
 - [ ] `no_grabbable_ticket` → everything ready is pending review or has a
-      leftover worktree. Merge/close the first, look at the second; do not
+      leftover worktree. Merge/close the first, look at the second. Do not
       delete the worktree until you have read the ledger line that mentions it.
 - [ ] Always-stop still always-stops: destructive operations, credentials or
       real external side-effects, acting over a live flag, unanswerable
@@ -110,25 +110,25 @@ trellis run --until-empty --board <slug> --provider <claude|codex> \
 
 Single loop runner stays as above. When the roster is staffed and an
 orchestrator drives the loop, the contract of record is the consuming repo's
-`docs/agents/orchestrator-contract.md` (Laber carries it); this section is the
+`docs/agents/orchestrator-contract.md` (Laber carries it). This section is the
 operational checklist, not the spec.
 
 ### Boundary with `dispatch-roster` — no overlap, no gap
 
-- [ ] `dispatch-roster` owns 「派给谁」 and ends when the roster is **on disk**:
+- [ ] `dispatch-roster` owns “派给谁” and ends when the roster is **on disk**:
       probe → four decisions → summary → write cards / ticket `meta.worker` /
       `meta.model` / `meta.effort` / `config.yaml` `worker_default` +
-      `orchestrator:` section. It asks「开跑吗？」(default no) and stops there.
-- [ ] `trellis-run` owns 「怎么跑」 from that line onward: launch the
+      `orchestrator:` section. It asks“开跑吗？”(default no) and stops there.
+- [ ] `trellis-run` owns “怎么跑” from that line onward: start the
       orchestrator, monitor the round, run the takeover protocol. This skill
-      never rewrites the roster; dispatch-roster never starts the runtime.
+      never rewrites the roster. Dispatch-roster never starts the runtime.
       If the `orchestrator:` config section is missing, the handoff back is
       to dispatch-roster (or the user), never improvisation.
 
 ### Standard opening — starting an orchestrator
 
 - [ ] Read `.trellis/config.yaml` `orchestrator:` → card name (`agent`), model
-      override, `max_parallel` (absent = 1). No section → stop; the roster was
+      override, `max_parallel` (absent = 1). No section → stop. The roster was
       never written.
 - [ ] Static layer first: `python ./.trellis/scripts/task.py validate <task>`
       per candidate ticket — missing cards, `provider: acp` without a
@@ -138,16 +138,16 @@ operational checklist, not the spec.
 - [ ] Handshake probe before spawn: the card's provider/`acp_target` gets the
       same light probe dispatch-roster uses (`initialize` + `session/new`
       against the registry row). Needs pre-login or not installed → report
-      and stop; never fall back to a different agent.
+      and stop. Never fall back to a different agent.
 - [ ] Spawn per the card: `trellis channel create <name>` then
       `trellis channel spawn <name> --agent <orchestrator.agent>` (add
       `--model <orchestrator.model>` when configured), with the contract doc
       passed via `--file` — or the supervising session claims the
-      orchestrator role inline. Session-level claim is the exclusivity;
-      concurrent orchestrators are out of scope for v1 (`max_parallel: 1`
+      orchestrator role inline. Session-level claim is the exclusivity.
+      Concurrent orchestrators are out of scope for v1 (`max_parallel: 1`
       anyway).
-- [ ] First prompt points at the contract doc + current frontier snapshot;
-      the orchestrator runs its own read-chain (编排接手 section), you do not
+- [ ] First prompt points at the contract doc + current frontier snapshot.
+      The orchestrator runs its own read-chain (编排接手 section). You do not
       pre-digest the board for it.
 
 ### Monitoring and takeover
@@ -159,14 +159,14 @@ operational checklist, not the spec.
       not the verdict — `delivery_deferred` exits 0.
 - [ ] Orchestrator died or the session changed → run the takeover chain:
       this round's run ledger → the roster (cards + ticket meta + config) →
-      `task.py frontier --json` → in-flight worktree check. A ticket with
-      `attempt_started` and no `attempt_finished` gets a liveness check
-      (worktree residue, `run-<slug>-*` channel still emitting, child
-      process alive); dead → redispatch the same ticket, record it as a
-      failed attempt that does **not** count toward strikes; alive → wait
+      `task.py frontier --json` → in-flight worktree verification. For a
+      ticket with `attempt_started` and no `attempt_finished`, verify
+      liveness (worktree residue, `run-<slug>-*` channel still emitting,
+      child process alive). Dead → redispatch the same ticket, record it as a
+      failed attempt that does **not** count toward strikes. Alive → wait
       for its close-out.
 - [ ] Scan existing state before waiting: `channel messages --raw` and the
-      ledger are the read path for what already happened; `channel wait`
+      ledger are the read path for what already happened. `channel wait`
       only sees future events.
 - [ ] Close-out is the orchestrator's three on-disk writes, in order: summary
       report to the user → board worklog close-out section (its own

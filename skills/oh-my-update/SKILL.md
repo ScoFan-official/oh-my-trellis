@@ -36,7 +36,7 @@ the latest version.
 
 Also check pack freshness (skills layer): the skills CLI lock records the
 hash this repo's skills were installed at — inspect `skills-lock.json`
-(project root) and diff it against the remote pack state; `npx skills`
+(project root) and diff it against the remote pack state. `npx skills`
 reports the same drift when you ask it to update. If the lock's recorded
 source/hash is behind `ScoFan-official/oh-my-trellis@main` (or the pack's
 latest pack `v*` tag / `VERSION`), the skills layer is stale too.
@@ -53,9 +53,9 @@ Before touching anything, present:
 - affected layers: Trellis templates (`.trellis/`), skills (the platform's
   skills dir), specs (`.trellis/spec/`)
 
-## Step 3: Confirm
+## Step 3: Get approval
 
-Ask the user to confirm the update. Do not proceed on silence; on a "no",
+Ask the user to approve the update. Do not proceed on silence. On a "no",
 stop and report nothing was changed.
 
 ## Step 4: Apply, in order
@@ -73,12 +73,12 @@ trellis init -r gh:ScoFan-official/oh-my-trellis -t agent-workflow --append
 `<platform>` is this agent's platform id as the skills CLI knows it
 (`devin`, `codex`, `claude`, `cursor`, …).
 
-Run each step only if the previous succeeded; on failure stop and report
+Run each step only if the previous succeeded. On failure stop and report
 which step failed.
 
 ## Step 5: Report
 
-- old version → new version (`trellis --version` again to verify)
+- old version → new version (`trellis --version` again to check)
 - per-layer result: CLI / Trellis templates / skills / specs —
   updated | skipped | failed
 - leftover `.new` files: `find . -name '*.new'` — list them and remind the

@@ -1,6 +1,6 @@
 ---
 name: hygiene-sweep
-description: "Read-only inventory audit inside a declared scope prefix: find dead code, duplicated logic and oversized files, write a durable findings list, never touch product code. Use when the user asks for 大扫除 / 清理 / dead code sweep / duplicate logic / hygiene audit on a module, or when a cleanup ticket needs a findings list before any edit. Approved deletions are executed in a separate cleanup ticket; the acceptance contract is .trellis/spec/agents/hygiene.md. Requires .trellis/ for the task-dir report path; without a task it writes to .scratch/."
+description: "Read-only inventory audit inside a declared scope prefix: find dead code, duplicated logic and oversized files, write a durable findings list, never touch product code. Use when the user asks for 大扫除 / 清理 / dead code sweep / duplicate logic / hygiene audit on a module, or when a cleanup ticket needs a findings list before any edit. Approved deletions are executed in a separate cleanup ticket. The acceptance contract is .trellis/spec/agents/hygiene.md. Requires .trellis/ for the task-dir report path. Without a task it writes to .scratch/."
 ---
 
 # hygiene-sweep — read-only inventory audit
@@ -10,7 +10,7 @@ edits product code.
 
 ## Scope discipline
 
-- Obtain the scope prefix from `prd.md` or the user before scanning (multiple
+- Get the scope prefix from `prd.md` or the user before scanning (multiple
   prefixes are allowed). If the scope is unclear, stop and ask. Do not default
   to the whole repo.
 - Read only files under the scope prefix. Files outside the scope must not be
@@ -38,7 +38,7 @@ edits product code.
    split) with a one-line reason.
 4. Oversized files get a split-plan section only: the proposed seam, each
    part's responsibility, and the recommended order. Do not write code.
-5. Write the list to `{TASK_DIR}/research/hygiene-sweep.md`; without an active
+5. Write the list to `{TASK_DIR}/research/hygiene-sweep.md`. Without an active
    task write to `.scratch/`. In chat report only the conclusion and the file
    location.
 6. Stop-line report: N findings total — M mechanically executable, K needing
@@ -48,7 +48,7 @@ edits product code.
 
 - "Dead" requires evidence: a repo-wide search shows no references, or every
   referrer is itself dead. When unsure, mark `存疑` (doubtful) — never `删`.
-- Duplicated logic must be same-shaped; merely similar behavior is marked
+- Duplicated logic must be same-shaped. Merely similar behavior is marked
   `相似` and not merged into the same case.
 - The list is a list: it must not contain "already fixed in passing" entries.
   The urge to fix in passing goes to a "separate proposals" section at the

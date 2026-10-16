@@ -7,7 +7,7 @@ description: "Reconcile always-loaded rule files against reality: enumerate ever
 
 Object = the rule files that enter context every round. Criterion = whether
 each rule still has evidence in the code or the environment. The default
-output is an audit report; give the user a ruling point before deleting.
+output is an audit report. Give the user a ruling point before deleting.
 
 ## Audit objects
 
@@ -35,7 +35,7 @@ output is an audit report; give the user a ruling point before deleting.
    without a task): each entry = source line number + ruling + evidence or
    the missing evidence.
 5. Apply by autonomy tier: `gated` delivers the report and waits for a
-   ruling; `hands-off` / `supervised-delivery` edit directly — delete
+   ruling. `hands-off` / `supervised-delivery` edit directly — delete
    `prune` lines, append "（保留原因：…）" to `annotate` lines — and attach a
    diff summary to the report. If no autonomy tier is configured, default
    to `gated`.
@@ -46,9 +46,9 @@ output is an audit report; give the user a ruling point before deleting.
 
 - Every ruling needs evidence or a stated lack of evidence — never batch-
   delete on impression.
-- An `annotate` addition is one sentence stating why the rule is needed; do
+- An `annotate` addition is one sentence stating why the rule is needed. Do
   not restate the rule text.
 - Mark doubtful entries `存疑` with the missing evidence spelled out, and
-  hand them to the user; do not fold them into `prune`.
-- Deletions and annotations land in the same commit; the report cites that
+  hand them to the user. Do not fold them into `prune`.
+- Deletions and annotations land in the same commit. The report cites that
   commit.

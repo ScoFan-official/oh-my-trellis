@@ -34,7 +34,7 @@ advisory 技能运不出设计系统——合约可以。oh-my-trellis 把
 | 你想要… | 运行 |
 | --- | --- |
 | 只要 Trellis 合约规范 | `trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append` |
-| 推荐技能集（mp 全量 37 个 + impeccable + 本包自建 `mp-trellis-bridge` / `oh-my-update` / `trellis-domains` / `trellis-run` / `dispatch-roster`） | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
+| 推荐技能集（mp 全量 37 个 + impeccable + 本包自建 `mp-trellis-bridge` / `oh-my-update` / `trellis-domains` / `trellis-run` / `dispatch-roster` / `hygiene-sweep` / `rules-audit`） | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
 | 1741 资产目录库里的任何东西 | `python scripts/install.py --platform <platform> --target <repo>` |
 
 仓库已公开，三条通道均无需认证，可自由组合。
@@ -94,7 +94,7 @@ npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy
 
 安装 **43 个技能**——mattpocock 全集
 （engineering / productivity / misc / in-progress）+ `impeccable` 前端设计工作流
-+ 本包五大自建技能：`mp-trellis-bridge`、`oh-my-update`、`trellis-domains`、`trellis-run` 与 `dispatch-roster`。
++ 本包七大自建技能：`mp-trellis-bridge`、`oh-my-update`、`trellis-domains`、`trellis-run`、`dispatch-roster`、`hygiene-sweep` 与 `rules-audit`。
 `--agent` 支持 `devin`、`codex`、`claude`、`cursor` 等 skills CLI 识别的平台。
 
 `mp-trellis-bridge` 是自举器 + 路由合约：首次加载时验证 `.trellis/`、
@@ -235,6 +235,8 @@ commands/MCP 路径为约定推断。
 | `trellis-domains` | **本包自建**。`.trellis/domains/` 板块层的薄壳——归口、插旗顺序判据、接手读档链、worklog/收工、对账检查清单，逐条指回仓内 `DISCIPLINE.md` / `WORKLOG-PROTOCOL.md` / `REGISTRY.md`（协议正文不住这里）。 |
 | `trellis-run` | **本包自建**。`trellis run`（frontier 无人值守循环）的薄壳——什么时候该交给循环、档位与 `delivery.auto_push_refs` 要先允许什么、run ledger 在哪（以及它为何不是对账源）、五种停线原因、`always_stop` 闸门，以及与 `dispatch-roster` 的 orchestrator 模式协同边界。 |
 | `dispatch-roster` | **本包自建**。为无人值守执行装配派工表（roster）：通过轻量握手与凭据检测（3 种状态）探测 ACP 目标（grok-build / codex / claude），敲定 4 项决策（orchestrator、角色默认目标、逐票覆盖、max_parallel），落盘至卡片 frontmatter、ticket meta 与 config.yaml，并移交 `trellis-run` 开跑。 |
+| `hygiene-sweep` | **本包自建**。声明范围前缀内的只读存量审计——死代码、重复逻辑、超阈值文件——先产出落盘的发现清单再谈改动。自带 `scope_check.py` 机械闸（范围白名单 + 800 行拆分阈），清扫票按 `spec/agents/hygiene.md` 验收。 |
+| `rules-audit` | **本包自建**。常驻规则文件（AGENTS.md / CLAUDE.md）对账：逐条取证、无证据的删、保留的补一句存在理由。 |
 
 ### impeccable —— 1 个技能，24 条命令（前端设计）
 

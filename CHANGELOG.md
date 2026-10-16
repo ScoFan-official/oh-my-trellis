@@ -8,6 +8,29 @@ skills/assets/templates added, **patch** = fixes to existing content.
 `VERSION` at the repo root is the source of truth; each release is tagged
 `vX.Y.Z`.
 
+## Unreleased
+
+Repository-hygiene pipeline: scoped read-only audit, rules-file
+reconciliation, and a cleanup-ticket acceptance contract.
+
+- `skills/hygiene-sweep/` — **new**. Read-only inventory audit inside a
+  declared scope prefix: dead code, duplicated logic, oversized files and
+  debug residue go into a durable findings list; product code is never
+  edited. Oversized files (>800 lines by default) get a split-plan section
+  only. Bundles `scripts/scope_check.py` — the mechanical gate that checks
+  changed paths against the declared scope and fails edits to
+  over-threshold files (ASCII output for GBK consoles).
+- `skills/rules-audit/` — **new**. Reconciles always-loaded rule files
+  (AGENTS.md / CLAUDE.md) against reality: per-rule evidence enumeration
+  (command exists / path exists / convention honored), `keep` / `prune` /
+  `annotate` rulings on the writing-for-agents criteria, autonomy-tiered
+  apply (gated = report only).
+- `marketplace/specs/agent-workflow/agents/hygiene.md` — **new**. The
+  cleanup-ticket acceptance contract for the spec axis: only delete /
+  reorder / rename / equivalent refactor in the diff, scope-prefix gate via
+  `scope_check.py`, split-plan-first for over-threshold files, no drive-by
+  fixes.
+
 ## 1.3.0 — 2026-10-13
 
 Voice contract, dispatch-roster skill, unattended runner loop shell, and

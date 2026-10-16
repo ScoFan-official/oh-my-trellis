@@ -34,7 +34,7 @@ Trellis's `.trellis/` spine so the workflow is enforced, not suggested.
 | You want… | Run |
 | --- | --- |
 | The Trellis contract specs only | `trellis init --registry gh:ScoFan-official/oh-my-trellis/marketplace --template agent-workflow --append` |
-| The recommended skill set (all 37 mp skills + impeccable + the pack's own `mp-trellis-bridge` / `oh-my-update` / `trellis-domains` / `trellis-run` / `dispatch-roster`) | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
+| The recommended skill set (all 37 mp skills + impeccable + the pack's own `mp-trellis-bridge` / `oh-my-update` / `trellis-domains` / `trellis-run` / `dispatch-roster` / `hygiene-sweep` / `rules-audit`) | `npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy` |
 | Anything else from the 1,741-asset catalog | `python scripts/install.py --platform <platform> --target <repo>` |
 
 Repo is public — all three channels work without auth. Mix and match freely.
@@ -97,9 +97,9 @@ npx skills add ScoFan-official/oh-my-trellis --agent <platform> --copy
 
 Installs **43 skills** — mattpocock's full collection
 (engineering, productivity, misc, in-progress) plus `impeccable`, the frontend
-design workflow, plus the pack's five first-party skills:
-`mp-trellis-bridge`, `oh-my-update`, `trellis-domains`, `trellis-run`, and
-`dispatch-roster`. `--agent` accepts `devin`, `codex`,
+design workflow, plus the pack's seven first-party skills:
+`mp-trellis-bridge`, `oh-my-update`, `trellis-domains`, `trellis-run`,
+`dispatch-roster`, `hygiene-sweep`, and `rules-audit`. `--agent` accepts `devin`, `codex`,
 `claude`, `cursor` and the other platforms the skills CLI knows.
 
 `mp-trellis-bridge` is a bootstrapper + routing contract: on first load it
@@ -242,6 +242,8 @@ implement → retro*, with two intake ramps and standalone utilities.
 | `trellis-domains` | **Ours.** Thin shell over the `.trellis/domains/` layer — 归口 routing, board flag order criterion, takeover read-chain, worklog/收工 and 对账 checklists that point at the repo's `DISCIPLINE.md` / `WORKLOG-PROTOCOL.md` / `REGISTRY.md` (the protocol text never lives here). |
 | `trellis-run` | **Ours.** Thin shell over `trellis run`, the unattended frontier loop — when the loop is the right tool, what the tier + `delivery.auto_push_refs` must already allow, where the run ledger lives (and why it is never a reconciliation source), five stop reasons, `always_stop` guard, and the orchestrator boundary with `dispatch-roster`. |
 | `dispatch-roster` | **Ours.** Staffs the dispatch roster (派工表) for unattended runs: probes ACP targets (grok-build / codex / claude) via lightweight handshake + credential checks (3 states), settles four decisions (orchestrator, role defaults, ticket overrides, max_parallel), writes to disk, and hands off to `trellis-run`. |
+| `hygiene-sweep` | **Ours.** Read-only inventory audit inside a declared scope prefix — dead code, duplicated logic, oversized files — writing a durable findings list before any edit. Bundles `scope_check.py`, the mechanical gate (scope prefix + 800-line split-plan rule) that cleanup tickets run against `spec/agents/hygiene.md`. |
+| `rules-audit` | **Ours.** Reconciles always-loaded rule files (AGENTS.md / CLAUDE.md) against reality: per-rule evidence check, prune the evidence-free, annotate the kept with why they exist. |
 
 ### impeccable — 1 skill, 24 commands (frontend design)
 

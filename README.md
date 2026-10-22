@@ -1,3 +1,5 @@
+> **omtre is now an independent product.** This repository is the legacy skill pack. The CLI, docs, and release line live at [ScoFan-official/omtre](https://github.com/ScoFan-official/omtre).
+
 <p align="center">
   <img src="assets/hero.png" alt="oh-my-trellis — mattpocock × ECC × impeccable on one Trellis spine">
 </p>

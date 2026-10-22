@@ -1,3 +1,5 @@
+> **omtre 已成为独立产品。** 本仓库是旧版技能包；CLI、文档与发布线已迁至 [ScoFan-official/omtre](https://github.com/ScoFan-official/omtre)。
+
 <p align="center">
   <img src="assets/hero.png" alt="oh-my-trellis — mattpocock × ECC × impeccable，一条 Trellis 主轴">
 </p>
